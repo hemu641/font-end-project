@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕:rem实现</title>
+    <style>
+        /* 设置根元素字体大小，作为rem的基准 */
+        html {
+            font-size: 16px; /* 1rem = 16px */
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 1.25rem; /* 20px / 16px = 1.25rem */
+            transition: all 0.3s ease;
+        }
+
+        /* 默认样式 - 小屏幕 */
+        body {
+            background-color: #ffcccc;
+            font-size: 0.875rem; /* 14px / 16px = 0.875rem */
+        }
+
+        h1 {
+            margin-bottom: 1.25rem; /* 20px / 16px = 1.25rem */
+            font-size: 1.75rem; /* 28px / 16px = 1.75rem */
+        }
+
+        .info {
+            padding: 0.9375rem; /* 15px / 16px = 0.9375rem */
+            border-radius: 0.3125rem; /* 5px / 16px = 0.3125rem */
+            background-color: rgba(255, 255, 255, 0.7);
+            display: inline-block;
+            font-size: 0.875rem; /* 14px / 16px = 0.875rem */
+        }
+
+        /* 中等屏幕 */
+        @media screen and (min-width: 600px) {
+            html {
+                font-size: 18px; /* 1rem = 18px，整体放大 */
+            }
+            
+            body {
+                background-color: #ccffcc;
+            }
+        }
+
+        /* 大屏幕 */
+        @media screen and (min-width: 900px) {
+            html {
+                font-size: 20px; /* 1rem = 20px，进一步放大 */
+            }
+            
+            body {
+                background-color: #ccccff;
+            }
+        }
+
+        /* 超大屏幕 */
+        @media screen and (min-width: 1200px) {
+            html {
+                font-size: 22px; /* 1rem = 22px，最大尺寸 */
+            }
+            
+            body {
+                background-color: #ffffcc;
+            }
+        }
+
+        /* 针对移动设备横屏 */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            html {
+                font-size: 17px; /* 1rem = 17px */
+            }
+            
+            body {
+                background-color: #ffccff;
+                font-size: 1rem; /* 17px / 17px = 1rem */
+            }
+        }
+        
+        ul {
+            text-align: left;
+            font-size: 0.875rem; /* 14px / 基准px = x rem */
+        }
+        
+        li {
+            margin: 0.3125rem 0; /* 5px / 基准px = x rem */
+            font-size: 0.875rem;
+        }
+        
+        .rem-explanation {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            margin: 1rem auto;
+            border-radius: 0.5rem;
+            max-width: 600px;
+            text-align: left;
+        }
+        
+        .rem-explanation h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+        
+        .rem-explanation p {
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .rem-explanation code {
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rem 单位示例</h1>
+    
+    <div class="rem-explanation">
+        <h2>关于 Rem 单位</h2>
+        <p><code>rem</code>（root em）是CSS中的相对长度单位，相对于HTML根元素（即<code>&lt;html&gt;</code>元素）的字体大小。</p>
+        <p>与<code>em</code>不同，<code>rem</code>总是相对于根元素，而不是父元素，这使得它更容易预测和控制。</p>
+        <p><strong>使用方法：</strong></p>
+        <p>1. 在<code>&lt;html&gt;</code>元素上设置基础字体大小（如<code>font-size: 16px</code>）</p>
+        <p>2. 其他元素使用<code>rem</code>单位，基于根元素的字体大小计算（如<code>1.5rem = 24px</code>当根字体为<code>16px</code>时）</p>
+        <p>3. 通过媒体查询调整根元素的字体大小，实现整体缩放效果</p>
+    </div>
+    
+    <div class="info">
+        <p>调整浏览器窗口大小查看效果</p>
+        <p>通过修改html根元素的font-size来控制所有使用rem单位的元素</p>
+        <ul>
+            <li>小屏幕 (默认): 白色文字，红色背景</li>
+            <li>中等屏幕 (≥600px): 基准字体增大到18px</li>
+            <li>大屏幕 (≥900px): 基准字体增大到20px</li>
+            <li>超大屏幕 (≥1200px): 基准字体增大到22px</li>
+            <li>移动端横屏 (高度&lt;500px): 粉色背景，基准字体17px</li>
+        </ul>
+        <p>所有字体大小都使用rem单位，实现了统一缩放的效果</p>
+    </div>
+</body>
+</html>

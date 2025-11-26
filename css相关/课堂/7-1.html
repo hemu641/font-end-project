@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：flex布局</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        /* 容器 */
+        .flex{
+            display: flex; 
+            /*flex-wrap: wrap; */ /* 换行 */ /*本质：项目不自动压缩*/
+            justify-content: space-between; /* 主轴对齐方式 */
+            align-items: center; /* 侧轴对齐方式 */
+            gap: 5px; /* 项目间距 */
+        }
+        /* 项目 */   /* 项目在一行 */
+        li{           
+            list-style: none;
+            width: 500px;
+            height: 200px;
+            margin-left: 10px;
+            border: 1px solid #000;
+            font-size: 30px;
+            text-align: center;
+            line-height: 200px;
+        }
+        /* li:nth-child(2)含义：选择器选择第2个li */
+        li:nth-child(2){
+            height: 300px;
+            order: -1; /* 项目排序 */
+            flex-shrink: 0;
+            /* 默认的flex-shrink: 1; 代表项目缩小比例*/
+            /* flex: 1; 项目放大比例 */
+            /* flex-basis: 300px; 项目基础大小 */
+        }
+        li:nth-child(3){
+            order: 2; /* 项目排序 */
+            /* flex-grow: 1; /* 项目放大比例 */
+            flex-shrink: 3;
+        }
+    </style>
+</head>
+<body>
+   <ul class="flex">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+   </ul>
+</body>
+</html>

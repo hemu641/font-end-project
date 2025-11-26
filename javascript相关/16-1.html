@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何丹：箭头函数和闭包</title>
+</head>
+<body>
+    <script>
+        //箭头函数：arrow function =>
+        //求m到n的和，m默认为1，n默认为100
+        let sum = (m=1, n=100) => {
+            let s = 0;
+            for (let i = m; i <= n; i++) {
+                s += i;
+            }
+            return s;
+        }
+        console.log(sum());
+        //求一个随机的1到100的随机整数
+        let random = () => {
+            return Math.floor(Math.random() * 100 + 1);
+
+        }
+        console.log(random());
+        //求N的立方
+        let cube = n => n * n * n;
+        console.log(cube(3));
+        //不定数量的参数
+        let sum2 = (...args) => {
+            let s = 0;
+            for (let i = 0; i < args.length; i++) {
+                s += args[i];
+            }
+            return s;
+        }
+        console.log(sum2(1, 2, 3, 4, 5));
+        //闭包：函数嵌套函数，返回一个函数
+        //add,不使用自执行函数
+        function add() {
+            let count = 0;
+            return function () {
+                count++;
+                return count;
+            }
+        }
+        let add2=add();
+        console.log(add2(),add2(),add2());
+        //使用自执行函数定义上面的例子并调用
+        var hd=(function () {
+            let count = 0;
+            return function () {
+                count++;
+                return count;
+            }
+            
+        })();
+        console.log(hd(), hd(), hd());
+    </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：DOM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .button-container {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .button-container button {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+        .box-container {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .name-display {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>程柯昕的文档对象模型</h1>
+    
+    <div class="button-container">
+        <button id="btn1">修改h3的html和css</button>
+        <button id="btn2">在H3中显示第一个box的nodetype和nodename</button>
+        <button id="btn3">点击后，点击box可以改变css</button>
+        <button id="btn4">点击后，双击box可删除</button>
+        <button id="btn5">点击后，在box-container的最后增加一个box</button>
+        <button id="btn6">克隆box-container</button>
+        <button id="btn7">点击后，左右节点的文字颜色变为红色</button>
+        <button id="btn8">点击后mouseover时，box内部显示自己的姓名</button>
+        <button id="btn9">点击后mouseout时，box内部显示之前的内容</button>
+    </div>
+    
+    <h3 id="demo-h3">文档对象模型程柯昕</h3>
+    
+    <div class="box-container">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+        <div class="box">7</div>
+        <div class="box">8</div>
+        <div class="box">9</div>
+        <div class="box">10</div>
+    </div>
+    
+    <div id="clone-container"></div>
+
+    <script>
+        // 保存原始内容，用于恢复
+        const originalContents = {};
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 保存box的原始内容
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                originalContents[box.textContent] = box.textContent;
+            });
+        });
+        
+        // 按钮1：修改h3的html和css
+        document.getElementById('btn1').addEventListener('click', function() {
+            const h3 = document.getElementById('demo-h3');
+            h3.innerHTML = '<strong>修改后的DOM标题</strong>';
+            h3.style.color = 'blue';
+            h3.style.fontSize = '24px';
+        });
+        
+        // 按钮2：在H3中显示第一个box的nodetype和nodename
+        document.getElementById('btn2').addEventListener('click', function() {
+            const h3 = document.getElementById('demo-h3');
+            const firstBox = document.querySelector('.box');
+            if (firstBox) {
+                h3.textContent = `NodeType: ${firstBox.nodeType}, NodeName: ${firstBox.nodeName}`;
+            }
+        });
+        
+        // 按钮3：点击后，点击box可以改变css
+        document.getElementById('btn3').addEventListener('click', function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    this.style.backgroundColor = 'yellow';
+                    this.style.color = 'black';
+                });
+            });
+        });
+        
+        // 按钮4：点击后，双击box可删除
+        document.getElementById('btn4').addEventListener('click', function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.addEventListener('dblclick', function() {
+                    this.remove();
+                });
+            });
+        });
+        
+        // 按钮5：点击后，在box-container的最后增加一个box
+        document.getElementById('btn5').addEventListener('click', function() {
+            const container = document.querySelector('.box-container');
+            const newBox = document.createElement('div');
+            newBox.className = 'box';
+            newBox.textContent = `${container.children.length + 1}`;
+            container.appendChild(newBox);
+            // 保存新box的原始内容
+            originalContents[newBox.textContent] = newBox.textContent;
+        });
+        
+        // 按钮6：克隆box-container
+        document.getElementById('btn6').addEventListener('click', function() {
+            const container = document.querySelector('.box-container');
+            const cloneContainer = document.getElementById('clone-container');
+            // 移除之前的克隆内容
+            cloneContainer.innerHTML = '';
+            // 克隆container
+            const clonedContainer = container.cloneNode(true);
+            clonedContainer.style.marginTop = '30px';
+            cloneContainer.appendChild(clonedContainer);
+        });
+        
+        // 按钮7：点击后，左右节点的文字颜色变为红色
+        document.getElementById('btn7').addEventListener('click', function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach((box, index) => {
+                box.addEventListener('click', function() {
+                    // 左边节点
+                    if (index > 0) {
+                        boxes[index - 1].style.color = 'red';
+                    }
+                    // 右边节点
+                    if (index < boxes.length - 1) {
+                        boxes[index + 1].style.color = 'red';
+                    }
+                });
+            });
+        });
+        
+        // 按钮8：点击后mouseover时，box内部显示自己的姓名
+        document.getElementById('btn8').addEventListener('click', function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.addEventListener('mouseover', function() {
+                    this.textContent = '程柯昕';
+                    this.classList.add('name-display');
+                });
+            });
+        });
+        
+        // 按钮9：点击后mouseout时，box内部显示之前的内容
+        document.getElementById('btn9').addEventListener('click', function() {
+            const boxes = document.querySelectorAll('.box');
+            boxes.forEach(box => {
+                box.addEventListener('mouseout', function() {
+                    // 尝试恢复原始内容
+                    for (let key in originalContents) {
+                        if (originalContents.hasOwnProperty(key)) {
+                            // 找到对应的原始内容或使用当前box的数字标识
+                            if (originalContents[this.textContent] || this.textContent === '程柯昕') {
+                                // 从1开始的数字序列，找到匹配的数字
+                                const allBoxes = document.querySelectorAll('.box');
+                                const currentIndex = Array.from(allBoxes).indexOf(this);
+                                if (currentIndex !== -1) {
+                                    this.textContent = `${currentIndex + 1}`;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    this.classList.remove('name-display');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组进阶</title>
+</head>
+<body>
+   <script>
+    let a1 = [77,88,99,56,43,76,79,98,91,23];
+    // 数组的克隆:浅克隆
+    let a2 = a1.slice(); 
+    let a3 = [...a1]; // 扩展运算符
+    let a4 = Array.from(a1); // Array.from()
+    let a5 = a1.map(item => item); // map()
+    let a6 = [].concat(a1); // concat()
+    let a7 = a1.reduce((pre,cur) => [...pre,cur],[]); // reduce()
+    // 深克隆
+    let a8 = JSON.parse(JSON.stringify(a1));
+    // 深克隆的原理:将数组转换为字符串,再将字符串转换为数组
+    // 注意:深克隆只能克隆数组中的简单数据类型,不能克隆数组中的复杂数据类型(如对象,函数等)
+    console.log(a1,a2,a3,a4,a5,a6,a7,a8); 
+    
+    // 数组的循环:for,forin,for...of,forEach()
+    // for循环
+    for(let i = 0;i < a1.length;i++){
+        console.log(i,a1[i]);
+    }
+    // forin循环
+    for(let index in a1){
+        console.log(index,a1[index]);
+    }
+    // for...of循环
+    for(let item of a1){
+        console.log(item);
+    }
+    // forEach()循环
+    a1.forEach((item,index) => {
+        console.log(index,item);
+    })
+
+    // 查找
+    let a9 = a1.find(item => item > 90); // find(): 返回第一个满足条件的元素
+    let a10 = a1.findIndex(item => item > 90); // findIndex(): 返回第一个满足条件的元素的索引
+    let a11 = a1.filter(item => item > 90);  // filter(): 返回一个新数组,新数组中的元素满足条件
+    let a12 = a1.some(item => item > 90); // some(): 判断数组中是否有元素满足条件
+    let a13 = a1.every(item => item > 90); // every(): 判断数组中的所有元素是否都满足条件
+    console.log(a9,a10,a11,a12,a13);      
+    
+    // reduce(): 将数组中的元素进行运算,返回运算结果
+    let a14 = a1.reduce((pre,cur) => pre + cur); // pre: 上一次的运算结果,cur: 当前的元素
+    console.log(a14);
+
+    // 数组去重
+    let a15 = a1.filter((item,index,self) => self.indexOf(item) === index);// filter(): 返回一个新数组,新数组中的元素满足条件
+    console.log(a15);
+
+    // map(): 将数组中的所有成员+5,超出100的成员改为100
+    let a16 = a1.map(item => item + 5 > 100 ? 100 : item + 5);
+    console.log(a16);
+   </script> 
+</body>
+</html>

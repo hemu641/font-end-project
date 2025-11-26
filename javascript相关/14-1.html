@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：javascript基础</title>
+</head>
+<body>
+    
+    <script>
+        // 打印
+        console.log('程柯昕23006380230'); // 控制台打印
+        document.write('<h2>hello world</h2>'); // 页面打印, 可以打印html标签
+        // 弹窗
+        alert('hello world');
+        // prompt 输入名字，document.write打印
+        var name = prompt('请输入您的姓名：');
+        document.write('<h2>您的姓名是：' + name + '</h2>');
+        // confirm 弹窗，返回true或false
+        var confirm = confirm('是否删除？');
+        if (confirm) {
+            alert(confirm); // 弹窗显示true或false
+            document.write('<h2>删除成功</h2>');
+        } else {
+            alert(confirm); // 弹窗显示true或false
+            document.write('<h2>删除取消</h2>');
+        }
+    </script>
+</body>
+</html>

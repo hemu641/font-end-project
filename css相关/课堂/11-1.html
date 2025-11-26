@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：media query媒体查询</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* 默认样式 - 小屏幕 */
+        body {
+            background-color: #ffcccc;
+            font-size: 14px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .info {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: inline-block;
+        }
+
+        /* 中等屏幕 */
+        @media screen and (min-width: 600px) {
+            body {
+                background-color: #ccffcc;
+                font-size: 18px;
+            }
+        }
+
+        /* 大屏幕 */
+        @media screen and (min-width: 900px) {
+            body {
+                background-color: #ccccff;
+                font-size: 22px;
+            }
+        }
+
+        /* 超大屏幕 */
+        @media screen and (min-width: 1200px) {
+            body {
+                background-color: #ffffcc;
+                font-size: 26px;
+            }
+        }
+
+        /* 针对移动设备横屏 */
+        @media screen and (max-height: 500px) and (orientation: landscape) {
+            body {
+                background-color: #ffccff;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Media Query 媒体查询示例</h1>
+    <div class="info">
+        <p>调整浏览器窗口大小查看效果</p>
+        <p>不同屏幕尺寸下背景颜色和字体大小会发生变化</p>
+        <ul>
+            <li>小屏幕 (&lt;600px): 红色背景 + 小字体</li>
+            <li>中等屏幕 (≥600px): 绿色背景 + 中等字体</li>
+            <li>大屏幕 (≥900px): 蓝色背景 + 大字体</li>
+            <li>超大屏幕 (≥1200px): 黄色背景 + 超大字体</li>
+            <li>移动端横屏 (高度&lt;500px): 粉色背景</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+<!-- 长度单位：px,em,rem,vw,vh,%-->

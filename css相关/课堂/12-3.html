@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕23006380230:grid-template-areas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .grid {
+            list-style: none;
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr 1fr 1fr; 
+            grid-template-rows: repeat(4, 100px);
+            grid-template-areas: "a b b" 
+                                 "c b b" 
+                                 "c d e" 
+                                 "c d f";
+        }
+        .grid>li{
+            background-color: #1ca69d;
+            color: #fff;
+            font-size: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .grid>li:nth-child(1){
+            grid-area: a;
+        }
+        .grid>li:nth-child(2){
+            grid-area: b;
+        }
+        .grid>li:nth-child(3){
+            grid-area: c;
+        }
+        .grid>li:nth-child(4){
+            grid-area: d;
+        }
+        .grid>li:nth-child(5){
+            grid-area: e;
+        }
+        .grid>li:nth-child(6){
+            grid-area: f;
+        }
+    </style>
+</head>
+<body>
+    <ul class="grid">
+        <li>1(a)</li>
+        <li>2(b)</li>
+        <li>3(c)</li>
+        <li>4(d)</li>
+        <li>5(e)</li>
+        <li>6(f)</li>
+    </ul>
+</body>
+</html>

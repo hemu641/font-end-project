@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：上图下文</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            display: block; /*去掉图片下方的空隙*/
+        }
+        .slist{
+            display: flex;
+            gap: 5px;
+        }
+        .item{
+            width: 33.3%;
+            position: relative;
+        }
+        .item img{
+            width: 100%;
+        }
+        .item p{
+           text-align: center;
+           font-size: 13px;
+           color: #fff; 
+           line-height: 33px;
+           font-weight: bold;
+           position: absolute;
+           left: 0;
+           bottom: 0;
+           width: 100%;
+           background-color: rgba(0, 0, 0, 0.5); /*半透明背景*/
+        }
+    </style>
+</head>
+<body>
+    <div class="slist">
+
+        <div class="item">
+            <img src="../../images/02.jpg">
+            <p>我们的中国梦，文化进万家</p>
+        </div>
+
+        <div class="item">
+            <img src="../../images/03.jpg">
+            <p>我们的中国梦，文化进万家</p>
+        </div>
+
+        <div class="item">
+            <img src="../../images/03.jpg">
+            <p>我们的中国梦，文化进万家</p>
+        </div>
+
+    </div>
+</body>
+</html>

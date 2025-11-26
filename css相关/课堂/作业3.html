@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML定义列表与iframe演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.12);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h2::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 2px;
+        }
+
+        /* 定义列表样式 */
+        dl {
+            margin: 20px 0;
+        }
+
+        dt {
+            font-weight: bold;
+            color: #4a5568;
+            font-size: 1.1rem;
+            margin: 15px 0 5px 0;
+            padding: 8px 12px;
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        dt:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        dd {
+            margin-left: 20px;
+            color: #718096;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        dd:last-child {
+            border-bottom: none;
+        }
+
+        .interactive-dl {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .add-term-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .add-term-btn:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* iframe样式 */
+        .iframe-container {
+            margin: 20px 0;
+        }
+
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        iframe:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .iframe-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .iframe-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .iframe-btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .iframe-btn.secondary {
+            background: #ed8936;
+        }
+
+        .iframe-btn.secondary:hover {
+            background: #dd6b20;
+        }
+
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .tab-container {
+            margin-top: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            background: #e2e8f0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 0 8px 8px 8px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML定义列表与iframe演示</h1>
+        <p>探索HTML中定义列表(dl/dt/dd)和内联框架(iframe)的强大功能</p>
+    </header>
+
+    <div class="container">
+        <div class="content-grid">
+            <!-- 定义列表部分 -->
+            <section class="section">
+                <h2>定义列表 (Definition List)</h2>
+                
+                <p>定义列表用于展示术语和其对应的描述，非常适合创建词汇表、FAQ或属性列表。</p>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">基本示例</h3>
+                <dl>
+                    <dt>HTML</dt>
+                    <dd>超文本标记语言，用于创建网页的标准标记语言</dd>
+                    
+                    <dt>CSS</dt>
+                    <dd>层叠样式表，用于描述HTML元素在屏幕上的显示方式</dd>
+                    
+                    <dt>JavaScript</dt>
+                    <dd>一种轻量级的编程语言，使网页具有交互性</dd>
+                </dl>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">代码示例</h3>
+                <div class="code-example">
+&lt;dl&gt;<br>
+&nbsp;&nbsp;&lt;dt&gt;术语&lt;/dt&gt;<br>
+&nbsp;&nbsp;&lt;dd&gt;术语的详细描述&lt;/dd&gt;<br>
+&lt;/dl&gt;
+                </div>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">交互式示例</h3>
+                <div class="interactive-dl">
+                    <dl id="interactiveList">
+                        <dt>响应式设计</dt>
+                        <dd>使网站能够在不同设备和屏幕尺寸上良好显示的设计方法</dd>
+                        
+                        <dt>语义化HTML</dt>
+                        <dd>使用具有明确含义的HTML标签来构建网页结构</dd>
+                    </dl>
+                    <button class="add-term-btn" onclick="addNewTerm()">添加新术语</button>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">定义列表的特点</h3>
+                <ul class="feature-list">
+                    <li>语义化强，明确表示术语和定义的关系</li>
+                    <li>支持多个术语对应一个定义</li>
+                    <li>支持一个术语对应多个定义</li>
+                    <li>适合创建词汇表、FAQ和属性列表</li>
+                </ul>
+            </section>
+
+            <!-- iframe部分 -->
+            <section class="section">
+                <h2>内联框架 (iframe)</h2>
+                
+                <p>iframe允许在当前页面中嵌入另一个HTML文档，常用于嵌入地图、视频或其他网页内容。</p>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">基本示例</h3>
+                <div class="iframe-container">
+                    <iframe src="https://www.runoob.com/html/html-tutorial.html" 
+                            allowfullscreen>
+                    </iframe>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">代码示例</h3>
+                <div class="code-example">
+&lt;iframe src="url" width="100%" height="300"&gt;<br>
+&nbsp;&nbsp;&lt;p&gt;您的浏览器不支持iframe&lt;/p&gt;<br>
+&lt;/iframe&gt;
+                </div>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">动态控制示例</h3>
+                <div class="iframe-container">
+                    <iframe id="dynamicIframe" src="about:blank"></iframe>
+                    <div class="iframe-controls">
+                        <button class="iframe-btn" onclick="loadContent('html')">加载HTML内容</button>
+                        <button class="iframe-btn secondary" onclick="loadContent('css')">加载CSS内容</button>
+                        <button class="iframe-btn" onclick="loadContent('js')">加载JS内容</button>
+                        <button class="iframe-btn secondary" onclick="clearIframe()">清空内容</button>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 25px; color: #4a5568;">iframe属性详解</h3>
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('basic')">基本属性</button>
+                        <button class="tab" onclick="switchTab('security')">安全属性</button>
+                        <button class="tab" onclick="switchTab('advanced')">高级属性</button>
+                    </div>
+                    
+                    <div id="basic" class="tab-content active">
+                        <dl>
+                            <dt>src</dt>
+                            <dd>指定要嵌入的文档URL</dd>
+                            
+                            <dt>width</dt>
+                            <dd>设置iframe的宽度</dd>
+                            
+                            <dt>height</dt>
+                            <dd>设置iframe的高度</dd>
+                            
+                            <dt>frameborder</dt>
+                            <dd>控制是否显示边框（HTML5中已废弃）</dd>
+                        </dl>
+                    </div>
+                    
+                    <div id="security" class="tab-content">
+                        <dl>
+                            <dt>sandbox</dt>
+                            <dd>限制iframe内容的安全策略，如禁止脚本、表单提交等</dd>
+                            
+                            <dt>allow</dt>
+                            <dd>指定允许的功能，如摄像头、麦克风等</dd>
+                            
+                            <dt>referrerpolicy</dt>
+                            <dd>控制发送referrer信息的方式</dd>
+                        </dl>
+                    </div>
+                    
+                    <div id="advanced" class="tab-content">
+                        <dl>
+                            <dt>allowfullscreen</dt>
+                            <dd>允许iframe内容全屏显示</dd>
+                            
+                            <dt>loading</dt>
+                            <dd>控制iframe的加载方式（lazy/eager）</dd>
+                            
+                            <dt>name</dt>
+                            <dd>为iframe指定名称，可用作链接的目标</dd>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // 添加新术语功能
+        function addNewTerm() {
+            const term = prompt('请输入术语：');
+            if (!term) return;
+            
+            const definition = prompt('请输入定义：');
+            if (!definition) return;
+            
+            const dl = document.getElementById('interactiveList');
+            const dt = document.createElement('dt');
+            const dd = document.createElement('dd');
+            
+            dt.textContent = term;
+            dd.textContent = definition;
+            
+            dl.appendChild(dt);
+            dl.appendChild(dd);
+            
+            // 添加动画效果
+            dt.style.opacity = '0';
+            dd.style.opacity = '0';
+            dt.style.transform = 'translateX(-20px)';
+            dd.style.transform = 'translateX(-20px)';
+            
+            setTimeout(() => {
+                dt.style.transition = 'all 0.5s ease';
+                dd.style.transition = 'all 0.5s ease';
+                dt.style.opacity = '1';
+                dd.style.opacity = '1';
+                dt.style.transform = 'translateX(0)';
+                dd.style.transform = 'translateX(0)';
+            }, 10);
+        }
+
+        // 加载内容到iframe
+        function loadContent(type) {
+            const iframe = document.getElementById('dynamicIframe');
+            let content = '';
+            
+            switch(type) {
+                case 'html':
+                    content = `
+                        <html>
+                        <head>
+                            <style>
+                                body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+                                h1 { color: #667eea; }
+                                .box { background: white; padding: 15px; border-radius: 8px; margin: 10px 0; }
+                            </style>
+                        </head>
+                        <body>
+                            <h1>HTML内容示例</h1>
+                            <div class="box">
+                                <p>这是一个动态加载的HTML内容</p>
+                                <p>当前时间：${new Date().toLocaleString()}</p>
+                            </div>
+                        </body>
+                        </html>
+                    `;
+                    break;
+                case 'css':
+                    content = `
+                        <html>
+                        <head>
+                            <style>
+                                body { font-family: Arial; padding: 20px; }
+                                .css-demo {
+                                    background: linear-gradient(45deg, #667eea, #764ba2);
+                                    color: white;
+                                    padding: 30px;
+                                    border-radius: 15px;
+                                    text-align: center;
+                                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                                    animation: pulse 2s infinite;
+                                }
+                                @keyframes pulse {
+                                    0% { transform: scale(1); }
+                                    50% { transform: scale(1.05); }
+                                    100% { transform: scale(1); }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="css-demo">
+                                <h2>CSS动画演示</h2>
+                                <p>这是一个展示CSS效果的示例</p>
+                            </div>
+                        </body>
+                        </html>
+                    `;
+                    break;
+                case 'js':
+                    content = `
+                        <html>
+                        <head>
+                            <style>
+                                body { font-family: Arial; padding: 20px; text-align: center; }
+                                button { 
+                                    background: #667eea; 
+                                    color: white; 
+                                    border: none; 
+                                    padding: 10px 20px; 
+                                    border-radius: 5px; 
+                                    cursor: pointer;
+                                    font-size: 16px;
+                                    margin: 5px;
+                                }
+                                #counter { 
+                                    font-size: 48px; 
+                                    color: #667eea; 
+                                    margin: 20px 0;
+                                    font-weight: bold;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <h2>JavaScript交互示例</h2>
+                            <div id="counter">0</div>
+                            <button onclick="increment()">增加</button>
+                            <button onclick="decrement()">减少</button>
+                            <button onclick="reset()">重置</button>
+                            
+                            <script>
+                                let count = 0;
+                                function increment() {
+                                    count++;
+                                    updateCounter();
+                                }
+                                function decrement() {
+                                    count--;
+                                    updateCounter();
+                                }
+                                function reset() {
+                                    count = 0;
+                                    updateCounter();
+                                }
+                                function updateCounter() {
+                                    document.getElementById('counter').textContent = count;
+                                }
+                            <\/script>
+                        </body>
+                        </html>
+                    `;
+                    break;
+            }
+            
+            // 使用srcdoc属性加载内容
+            iframe.srcdoc = content;
+        }
+
+        // 清空iframe
+        function clearIframe() {
+            const iframe = document.getElementById('dynamicIframe');
+            iframe.srcdoc = '<html><body style="font-family: Arial; padding: 20px; text-align: center;"><h2>内容已清空</h2><p>点击上方按钮加载新内容</p></body></html>';
+        }
+
+        // 切换标签页
+        function switchTab(tabName) {
+            // 移除所有active类
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 添加active类到当前标签
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化动态iframe
+            clearIframe();
+        });
+    </script>
+</body>
+</html>

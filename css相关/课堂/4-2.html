@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 全局css：在样式表最上方定义，全局样式，所有元素都生效。 */
+        body,h1,h2,h3,p,ul{
+            margin: 0;
+            padding: 0;
+        }
+        /* 群组选择器，并集选择器，不要使用通配符*代替 */
+        #box{
+            width: 483px;
+            border: 1px solid #ccc;
+            margin: 20px;
+            padding: 8px;
+            font-size: 14px;
+        }
+        #box h3{         /* 后代选择器 */
+            text-align: center;
+            font-size: 16px;
+            line-height: 30px;
+            color: #036;
+            letter-spacing: 1px;
+        }
+        #box p{
+            color: #999;
+            line-height: 20px;
+            text-indent: 2em;
+        }
+        #box a{
+            text-decoration: none;   /* 去掉下划线 */
+            color: #e00;
+        }
+    </style>
+</head>
+<body>
+    <h2>群组选择器和后代选择器</h2>
+    <div id="box">
+        <h3>程柯昕：css那些事</h3>
+        <p>群组选择器尽量不要使用通配符*代替，标签选择器全部使用后代选择器的形式，
+            全局css在正式开发时需要定义。
+            <a href="#">【更多】</a>
+        </p>
+    </div>
+</body>
+</html>

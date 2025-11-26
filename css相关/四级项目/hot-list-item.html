@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>23006380230程柯昕 - 知乎移动端热榜元素</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            color: #1C1C1E;
+            line-height: 1.6;
+        }
+
+        /* 热榜：左图右文 */
+        .ckx_hot-list-item {
+            display: flex;
+            padding: 12px 16px;
+            background-color: white;
+            border-bottom: 1px solid #E6E6E6;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .ckx_hot-list-item .ckx_rank {
+            width: 20px;
+            height: 20px;
+            background-color: #F44336;
+            /* 红色 */
+            color: white;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0;
+            /* 去掉圆角，变成正方形 */
+            font-weight: bold;
+            align-self: flex-start;
+            margin-top: 2px;
+        }
+
+        .ckx_hot-list-item .ckx_content {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .ckx_hot-list-item .ckx_title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #1C1C1E;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .ckx_hot-list-item .ckx_heat {
+            font-size: 13px;
+            color: #858585;
+        }
+
+        .ckx_hot-list-item .ckx_image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 热榜：左图右文(23006380230程柯昕) -->
+    <div class="ckx_hot-list-item">
+        <div class="ckx_rank">1</div>
+        <div class="ckx_content">
+            <div class="ckx_title">是现在的博士更难读还是二三十年前的博士更难读？</div>
+            <div class="ckx_heat">402 万热度</div>
+        </div>
+        <img src="img/doctornews.png" class="ckx_image" />
+    </div>
+</body>
+
+</html>

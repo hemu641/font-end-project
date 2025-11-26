@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>手机事件演示 - 20-7</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        h2 {
+            margin: 20px 0 15px 0;
+            font-size: 22px;
+            color: #ffd700;
+        }
+        
+        /* 触摸区域样式 */
+        .touch-area {
+            width: 100%;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        .touch-area.active {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #ffd700;
+            transform: scale(0.98);
+        }
+        
+        .touch-area.long-press {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff6b6b;
+        }
+        
+        .touch-area.swipe {
+            background: rgba(0, 255, 0, 0.3);
+            border-color: #51cf66;
+        }
+        
+        .touch-text {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .touch-info {
+            font-size: 14px;
+            opacity: 0.8;
+            text-align: center;
+        }
+        
+        /* 事件日志区域 */
+        .event-log {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .log-entry.touchstart { border-left: 3px solid #4ecdc4; }
+        .log-entry.touchmove { border-left: 3px solid #45b7d1; }
+        .log-entry.touchend { border-left: 3px solid #96ceb4; }
+        .log-entry.touchcancel { border-left: 3px solid #feca57; }
+        
+        /* 手势指示器 */
+        .gesture-indicator {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .gesture-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 10px;
+            margin: 5px;
+            text-align: center;
+            min-width: 80px;
+            transition: all 0.3s ease;
+        }
+        
+        .gesture-item.active {
+            background: rgba(255, 215, 0, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .gesture-count {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .gesture-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        /* 控制按钮 */
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .btn:hover, .btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .touch-text {
+                font-size: 16px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 触摸点指示器 */
+        .touch-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            animation: pulse 0.5s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>📱 手机事件演示</h1>
+    
+    <div class="container">
+        <h2>🔍 触摸事件</h2>
+        <div class="touch-area" id="basicTouch">
+            <div class="touch-text">点击或触摸此区域</div>
+            <div class="touch-info">测试 touchstart, touchmove, touchend 事件</div>
+        </div>
+        
+        <div class="gesture-indicator">
+            <div class="gesture-item">
+                <div class="gesture-count" id="touchCount">0</div>
+                <div class="gesture-label">触摸次数</div>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-count" id="moveCount">0</div>
+                <div class="gesture-label">移动次数</div>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-count" id="endCount">0</div>
+                <div class="gesture-label">结束次数</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>👆 多点触控</h2>
+        <div class="touch-area" id="multiTouch">
+            <div class="touch-text">多点触控区域</div>
+            <div class="touch-info">尝试使用多个手指触摸</div>
+        </div>
+        
+        <div class="gesture-indicator">
+            <div class="gesture-item">
+                <div class="gesture-count" id="touchPoints">0</div>
+                <div class="gesture-label">当前触摸点</div>
+            </div>
+            <div class="gesture-item">
+                <div class="gesture-count" id="maxPoints">0</div>
+                <div class="gesture-label">最大触摸点</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>↔️ 滑动手势</h2>
+        <div class="touch-area" id="swipeArea">
+            <div class="touch-text">滑动手势区域</div>
+            <div class="touch-info">向左、右、上、下滑动</div>
+        </div>
+        
+        <div class="gesture-indicator">
+            <div class="gesture-item" id="swipeLeft">
+                <div class="gesture-count">←</div>
+                <div class="gesture-label">向左滑动</div>
+            </div>
+            <div class="gesture-item" id="swipeRight">
+                <div class="gesture-count">→</div>
+                <div class="gesture-label">向右滑动</div>
+            </div>
+            <div class="gesture-item" id="swipeUp">
+                <div class="gesture-count">↑</div>
+                <div class="gesture-label">向上滑动</div>
+            </div>
+            <div class="gesture-item" id="swipeDown">
+                <div class="gesture-count">↓</div>
+                <div class="gesture-label">向下滑动</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>📊 事件日志</h2>
+        <div class="event-log" id="eventLog">
+            <div class="log-entry">事件日志区域 - 触摸事件将在这里显示</div>
+        </div>
+        
+        <div class="control-buttons">
+            <button class="btn" id="clearLog">清空日志</button>
+            <button class="btn" id="resetCounters">重置计数器</button>
+            <button class="btn" id="vibrateTest">振动测试</button>
+        </div>
+    </div>
+
+    <script>
+        // 事件计数器
+        let touchCount = 0;
+        let moveCount = 0;
+        let endCount = 0;
+        let maxTouchPoints = 0;
+        
+        // 获取DOM元素
+        const basicTouch = document.getElementById('basicTouch');
+        const multiTouch = document.getElementById('multiTouch');
+        const swipeArea = document.getElementById('swipeArea');
+        const eventLog = document.getElementById('eventLog');
+        
+        // 计数器显示元素
+        const touchCountEl = document.getElementById('touchCount');
+        const moveCountEl = document.getElementById('moveCount');
+        const endCountEl = document.getElementById('endCount');
+        const touchPointsEl = document.getElementById('touchPoints');
+        const maxPointsEl = document.getElementById('maxPoints');
+        
+        // 滑动手势元素
+        const swipeLeftEl = document.getElementById('swipeLeft');
+        const swipeRightEl = document.getElementById('swipeRight');
+        const swipeUpEl = document.getElementById('swipeUp');
+        const swipeDownEl = document.getElementById('swipeDown');
+        
+        // 滑动手势变量
+        let startX = 0;
+        let startY = 0;
+        let endX = 0;
+        let endY = 0;
+        
+        // 长按计时器
+        let longPressTimer = null;
+        
+        // 添加事件日志
+        function addLog(eventType, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${eventType}`;
+            logEntry.innerHTML = `<strong>[${timestamp}] ${eventType.toUpperCase()}:</strong> ${message}`;
+            
+            eventLog.appendChild(logEntry);
+            eventLog.scrollTop = eventLog.scrollHeight;
+            
+            // 限制日志数量
+            if (eventLog.children.length > 50) {
+                eventLog.removeChild(eventLog.firstChild);
+            }
+        }
+        
+        // 更新计数器显示
+        function updateCounters() {
+            touchCountEl.textContent = touchCount;
+            moveCountEl.textContent = moveCount;
+            endCountEl.textContent = endCount;
+            touchPointsEl.textContent = maxTouchPoints;
+            maxPointsEl.textContent = maxTouchPoints;
+        }
+        
+        // 基础触摸事件处理
+        basicTouch.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            touchCount++;
+            basicTouch.classList.add('active');
+            
+            const touch = e.touches[0];
+            addLog('touchstart', `触摸开始 (X: ${touch.clientX}, Y: ${touch.clientY})`);
+            
+            // 创建触摸点指示器
+            createTouchPoint(touch.clientX, touch.clientY);
+            
+            // 开始长按计时器
+            longPressTimer = setTimeout(() => {
+                basicTouch.classList.add('long-press');
+                addLog('touchstart', '长按事件触发');
+                
+                // 触发振动（如果支持）
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+            }, 1000);
+            
+            updateCounters();
+        });
+        
+        basicTouch.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            moveCount++;
+            
+            const touch = e.touches[0];
+            addLog('touchmove', `触摸移动 (X: ${touch.clientX}, Y: ${touch.clientY})`);
+            
+            updateCounters();
+        });
+        
+        basicTouch.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            endCount++;
+            basicTouch.classList.remove('active', 'long-press');
+            
+            addLog('touchend', '触摸结束');
+            
+            // 清除长按计时器
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+            
+            updateCounters();
+        });
+        
+        basicTouch.addEventListener('touchcancel', function(e) {
+            e.preventDefault();
+            basicTouch.classList.remove('active', 'long-press');
+            addLog('touchcancel', '触摸被取消');
+            
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        });
+        
+        // 多点触控处理
+        multiTouch.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touchCount = e.touches.length;
+            maxTouchPoints = Math.max(maxTouchPoints, touchCount);
+            
+            multiTouch.classList.add('active');
+            multiTouch.querySelector('.touch-text').textContent = `${touchCount} 个触摸点`;
+            
+            addLog('touchstart', `多点触控: ${touchCount} 个触摸点`);
+            
+            // 创建所有触摸点指示器
+            for (let i = 0; i < touchCount; i++) {
+                const touch = e.touches[i];
+                createTouchPoint(touch.clientX, touch.clientY);
+            }
+            
+            updateCounters();
+        });
+        
+        multiTouch.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            multiTouch.classList.remove('active');
+            multiTouch.querySelector('.touch-text').textContent = '多点触控区域';
+            
+            addLog('touchend', '多点触控结束');
+        });
+        
+        // 滑动手势处理
+        swipeArea.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            
+            swipeArea.classList.add('active');
+            addLog('touchstart', `滑动开始 (X: ${startX}, Y: ${startY})`);
+        });
+        
+        swipeArea.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            endX = touch.clientX;
+            endY = touch.clientY;
+        });
+        
+        swipeArea.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+            const minSwipeDistance = 50; // 最小滑动距离
+            
+            swipeArea.classList.remove('active');
+            
+            // 重置所有滑动指示器
+            [swipeLeftEl, swipeRightEl, swipeUpEl, swipeDownEl].forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 检测滑动手势
+            if (Math.abs(deltaX) > minSwipeDistance || Math.abs(deltaY) > minSwipeDistance) {
+                swipeArea.classList.add('swipe');
+                
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    // 水平滑动
+                    if (deltaX > 0) {
+                        addLog('swipe', '向右滑动');
+                        swipeRightEl.classList.add('active');
+                    } else {
+                        addLog('swipe', '向左滑动');
+                        swipeLeftEl.classList.add('active');
+                    }
+                } else {
+                    // 垂直滑动
+                    if (deltaY > 0) {
+                        addLog('swipe', '向下滑动');
+                        swipeDownEl.classList.add('active');
+                    } else {
+                        addLog('swipe', '向上滑动');
+                        swipeUpEl.classList.add('active');
+                    }
+                }
+                
+                // 移除滑动样式
+                setTimeout(() => {
+                    swipeArea.classList.remove('swipe');
+                }, 500);
+            }
+        });
+        
+        // 创建触摸点指示器
+        function createTouchPoint(x, y) {
+            const touchPoint = document.createElement('div');
+            touchPoint.className = 'touch-point';
+            touchPoint.style.left = (x - 10) + 'px';
+            touchPoint.style.top = (y - 10) + 'px';
+            
+            document.body.appendChild(touchPoint);
+            
+            // 动画结束后移除
+            setTimeout(() => {
+                if (touchPoint.parentNode) {
+                    touchPoint.parentNode.removeChild(touchPoint);
+                }
+            }, 500);
+        }
+        
+        // 控制按钮事件
+        document.getElementById('clearLog').addEventListener('click', function() {
+            eventLog.innerHTML = '<div class="log-entry">事件日志已清空</div>';
+        });
+        
+        document.getElementById('resetCounters').addEventListener('click', function() {
+            touchCount = 0;
+            moveCount = 0;
+            endCount = 0;
+            maxTouchPoints = 0;
+            updateCounters();
+            
+            // 重置滑动指示器
+            [swipeLeftEl, swipeRightEl, swipeUpEl, swipeDownEl].forEach(el => {
+                el.classList.remove('active');
+            });
+        });
+        
+        document.getElementById('vibrateTest').addEventListener('click', function() {
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+                addLog('vibration', '振动测试成功');
+            } else {
+                addLog('vibration', '设备不支持振动');
+            }
+        });
+        
+        // 添加点击事件支持（用于桌面测试）
+        basicTouch.addEventListener('click', function() {
+            addLog('click', '点击事件（桌面测试）');
+        });
+        
+        // 初始化
+        addLog('info', '手机事件演示已加载，请在移动设备上测试以获得最佳效果');
+        updateCounters();
+    </script>
+</body>
+</html>

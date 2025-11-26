@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：css3选择器和属性</title>
+    <style>
+        .box{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px;
+        }
+        .item{
+            width: 150px;
+            height: 150px;
+            border: 1px solid #aaa;
+            font-size: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* 过渡：0.6s */
+            transition: all 1.2s;
+        }
+        /* 第一个.item的hover状态 */
+        /* 既是第1个.item，也是第1个子元素 */
+        .item:nth-child(1):hover{
+            background-color: #000;
+            color: white;
+            font-size: 100px;
+        }
+        /* 第2个.item的hover状态 */
+        .item:nth-child(2):hover{
+            border-radius: 100px;
+        }
+        /* 第3个.item的hover状态 */
+        .item:nth-child(3):hover{
+            box-shadow: 10px 10px 10px #000;
+            text-shadow: 30px 0px 10px #000;
+        }
+        /* 第4个.item的hover状态 */
+        .item:nth-child(4):hover{
+            background: linear-gradient(45deg, red,yellow, blue);
+        }
+        /* 第5个.item的hover状态 */
+        .item:nth-child(5):hover{
+            background: radial-gradient(#fff,#000);
+        }
+        /* 第6个 nth-of-type */
+        /* 第六个.item的hover状态 */
+        .item:nth-of-type(6):hover{
+            /* scale:缩放-->1倍 放大; <1倍 缩小; */
+            transform: scale(1.5);
+            background-color: azure;
+            font-size: 100px;
+        }
+        /* 第7个.item,translatex --> */
+        .item:nth-of-type(7):hover{
+            transform: translateX(-100px);
+        }
+        /* 第8个.item,使用+相邻兄弟选择器 --> */
+        /* ~ 表示全部兄弟元素，+ 表示相邻兄弟元素 */
+        .item:nth-of-type(7) + div:hover{
+            transform: skewX(-20deg);
+        }
+        /* 第9个.item rotate --> */
+        .item:nth-of-type(9):hover{
+            transform: rotateZ(180deg);
+        }
+        /* 第10个.item,:AFTER 伪元素 --> */
+        .item:nth-of-type(10):hover::after{
+            content: "*";
+            font-size: 30px;
+            color: red;
+        }
+        /* odd --> 奇数 */
+        .item:nth-of-type(odd)::before{
+            content: "#";
+            font-size: 30px;
+            color: rgb(213, 213, 226);
+        }
+        /* 第11个.item,nth-last-child --> */
+        .item:nth-last-child(2):hover{
+            font-size: 100px;
+            color: #fff;
+            text-shadow: 1px 1px 1px #000;
+        }
+        /* 第12个.item,倒数第一个 hover状态 --> */
+        div[class=item]:last-of-type:hover::before{
+            content: "程";
+            font-size: 30px;
+            color: rgb(117, 161, 141);
+        }
+    </style>
+</head>
+<body>
+    <h2>程柯昕</h2>
+    <div class="box">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+        <div class="item">10</div>
+        <div class="item">11</div>
+        <div class="item">12</div>
+    </div>
+    <div class="box">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+        <div class="item">4</div>
+        <div class="item">5</div>
+        <div class="item">6</div>
+        <div class="item">7</div>
+        <div class="item">8</div>
+        <div class="item">9</div>
+        <div class="item">10</div>
+        <div class="item">11</div>
+        <div class="item">12</div>
+    </div>
+</body>
+</html>

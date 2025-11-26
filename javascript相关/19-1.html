@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 演示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #dynamic-list li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>DOM 操作演示</h1>
+    
+    <!-- 1. 查找示例 -->
+    <div class="container">
+        <h2>1. 查找元素</h2>
+        <p id="find-me">通过ID查找我</p>
+        <p class="find-class">通过类名查找我</p>
+        <p class="find-class">通过类名查找我</p>
+    </div>
+    
+    <!-- 2. 修改内容示例 -->
+    <div class="container">
+        <h2>2. 修改内容</h2>
+        <p id="content-demo">原始文本内容</p>
+        <button onclick="changeContent()">修改文本内容</button>
+    </div>
+    
+    <!-- 3. 修改样式示例 -->
+    <div class="container">
+        <h2>3. 修改样式</h2>
+        <p id="style-demo">点击按钮改变我的样式</p>
+        <button onclick="changeStyle()">改变样式</button>
+    </div>
+    
+    <!-- 4. 创建和删除元素示例 -->
+    <div class="container">
+        <h2>4. 创建和删除元素</h2>
+        <div id="dynamic-content">
+            <p>这是原有内容</p>
+        </div>
+        <button onclick="addElement()">添加元素</button>
+        <button onclick="removeElement()">删除元素</button>
+    </div>
+    
+    <!-- 5. 动态列表示例 -->
+    <div class="container">
+        <h2>5. 动态列表</h2>
+        <ul id="dynamic-list">
+            <li>项目 1</li>
+            <li>项目 2</li>
+        </ul>
+        <input type="text" id="item-input" placeholder="输入新项目">
+        <button onclick="addItem()">添加项目</button>
+        <button onclick="clearList()">清空列表</button>
+    </div>
+    
+    <!-- 6. 事件处理示例 -->
+    <div class="container">
+        <h2>6. 事件处理</h2>
+        <p id="event-demo">点击下面的按钮查看事件处理效果</p>
+        <button onclick="handleClick()">点击我</button>
+        <button onmouseover="handleMouseOver()" onmouseout="handleMouseOut()">鼠标悬停</button>
+    </div>
+
+    <script>
+        // 1. 查找元素示例
+        console.log("=== 查找元素 ===");
+        const byId = document.getElementById('find-me');
+        console.log('通过ID查找:', byId);
+        
+        const byClass = document.getElementsByClassName('find-class');
+        console.log('通过类名查找:', byClass);
+        
+        const byQuery = document.querySelector('#find-me');
+        console.log('通过querySelector查找:', byQuery);
+        
+        const byQueryAll = document.querySelectorAll('.find-class');
+        console.log('通过querySelectorAll查找:', byQueryAll);
+        
+        // 2. 修改内容函数
+        function changeContent() {
+            const contentDemo = document.getElementById('content-demo');
+            contentDemo.textContent = '内容已被修改！' + new Date().toLocaleTimeString();
+        }
+        
+        // 3. 修改样式函数
+        function changeStyle() {
+            const styleDemo = document.getElementById('style-demo');
+            styleDemo.style.color = 'blue';
+            styleDemo.style.fontSize = '20px';
+            styleDemo.style.fontWeight = 'bold';
+            
+            // 切换CSS类
+            styleDemo.classList.toggle('highlight');
+        }
+        
+        // 4. 创建和删除元素函数
+        function addElement() {
+            const container = document.getElementById('dynamic-content');
+            const newElement = document.createElement('p');
+            newElement.textContent = '这是新添加的元素 ' + new Date().toLocaleTimeString();
+            container.appendChild(newElement);
+        }
+        
+        function removeElement() {
+            const container = document.getElementById('dynamic-content');
+            if (container.lastElementChild && container.lastElementChild.tagName === 'P') {
+                container.removeChild(container.lastElementChild);
+            } else {
+                alert('没有可以删除的元素了！');
+            }
+        }
+        
+        // 5. 动态列表函数
+        function addItem() {
+            const input = document.getElementById('item-input');
+            const list = document.getElementById('dynamic-list');
+            
+            if (input.value.trim() !== '') {
+                const newItem = document.createElement('li');
+                newItem.textContent = input.value;
+                list.appendChild(newItem);
+                input.value = ''; // 清空输入框
+            } else {
+                alert('请输入有效的项目名称！');
+            }
+        }
+        
+        function clearList() {
+            const list = document.getElementById('dynamic-list');
+            while (list.firstChild) {
+                list.removeChild(list.firstChild);
+            }
+        }
+        
+        // 6. 事件处理函数
+        function handleClick() {
+            const eventDemo = document.getElementById('event-demo');
+            eventDemo.textContent = '按钮被点击了！' + new Date().toLocaleTimeString();
+            eventDemo.style.color = 'green';
+        }
+        
+        function handleMouseOver() {
+            const eventDemo = document.getElementById('event-demo');
+            eventDemo.textContent = '鼠标悬停在按钮上！';
+            eventDemo.style.color = 'orange';
+        }
+        
+        function handleMouseOut() {
+            const eventDemo = document.getElementById('event-demo');
+            eventDemo.textContent = '鼠标离开了按钮';
+            eventDemo.style.color = 'black';
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面DOM加载完成！');
+        });
+    </script>
+</body>
+</html>

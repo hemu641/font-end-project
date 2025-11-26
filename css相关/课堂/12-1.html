@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕23006380230:grid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .grid {
+            list-style: none;
+            display: grid;
+            gap:8px;
+            /* grid-template-columns: repeat(3,1fr);
+            grid-template-columns: 200px 2fr 1fr;
+            grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+            grid-template-columns: 300px auto; */
+            grid-template-columns: 1fr 1fr 1fr; 
+            grid-template-rows: repeat(3,100px);
+        }
+        .grid>li{
+            background-color: #888;
+            color: #fff;
+            padding:20px 0;
+            font-size: 30px;
+            line-height: 60px;
+            text-align: center;
+        }
+        .grid li:nth-child(2){
+            /* 占[2，4）列和[1,3）行,前端区间，左闭右开，从1开始 */
+            grid-column: 2/4;
+            grid-row: 1/3;
+        }
+        .grid li:nth-child(3){
+            grid-row: 2/5;
+        }
+        .grid li:nth-child(4){
+            grid-row: 3/span 2;
+        }
+    </style>
+</head>
+<body>
+    <ul class="grid">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+    </ul>
+</body>
+</html>

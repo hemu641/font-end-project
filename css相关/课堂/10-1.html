@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕的过渡transition</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .tlist{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+            padding: 8px;
+            list-style: none;
+        }
+        .tlist li{ 
+            width: 28.3%;
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .tlist img{ 
+            width: 100%;
+            /* 过渡1s */
+            transition: all 1s;
+        }
+        .text{
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            /* 透明背景 */
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            height: 33px;
+            /* 过渡0.8s */
+            transition: all .8s;
+        }
+        .text h3{ 
+            height: 33px;
+            font-size: 14px;
+            line-height: 33px;
+            text-align: center;
+        }
+        .text p{ 
+            font-size: 12px;
+            line-height: 22px;
+            height: 44px;
+            overflow: hidden;
+            text-indent: 2px;
+        }
+        .tlist>li:nth-child(3n+1):hover img{
+            transform: scale(1.6);
+        }
+        .tlist>li:nth-child(3n+2):hover .text{
+            height: 77px;
+        }
+        .tlist>li:nth-child(3n+3):hover .text{
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+   <ul class="tlist">
+    <li>
+        <img src="../../images/1.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/2.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/3.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/4.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/5.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/6.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/7.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+    <li>
+        <img src="../../images/8.jpg">
+        <div class="text">
+            <h3>福建舰电子弹射试验成功</h3>
+            <p>电子弹射和蒸汽弹射都是重要的飞行技术。</p>
+        </div>
+    </li>
+   </ul> 
+</body>
+</html>

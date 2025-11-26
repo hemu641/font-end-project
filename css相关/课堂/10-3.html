@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>纯CSS幻灯片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: fade 32s infinite;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-text {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 50%;
+        }
+
+        .slide-text h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .slide-text p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+
+        @keyframes fade {
+            0% { opacity: 0; }
+            4% { opacity: 1; }
+            8% { opacity: 1; }
+            12% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .slide:nth-child(1) { animation-delay: 0s; }
+        .slide:nth-child(2) { animation-delay: 4s; }
+        .slide:nth-child(3) { animation-delay: 8s; }
+        .slide:nth-child(4) { animation-delay: 12s; }
+        .slide:nth-child(5) { animation-delay: 16s; }
+        .slide:nth-child(6) { animation-delay: 20s; }
+        .slide:nth-child(7) { animation-delay: 24s; }
+        .slide:nth-child(8) { animation-delay: 28s; }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slide">
+            <img src="../../images/1.jpg" alt="Image 1">
+            <div class="slide-text">
+                <h2>第一张图片</h2>
+                <p>这是第一张幻灯片的内容，展示了美丽的风景。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/2.jpg" alt="Image 2">
+            <div class="slide-text">
+                <h2>第二张图片</h2>
+                <p>这是第二张幻灯片的内容，展示了自然风光。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/3.jpg" alt="Image 3">
+            <div class="slide-text">
+                <h2>第三张图片</h2>
+                <p>这是第三张幻灯片的内容，展示了城市景观。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/4.jpg" alt="Image 4">
+            <div class="slide-text">
+                <h2>第四张图片</h2>
+                <p>这是第四张幻灯片的内容，展示了建筑之美。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/5.jpg" alt="Image 5">
+            <div class="slide-text">
+                <h2>第五张图片</h2>
+                <p>这是第五张幻灯片的内容，展示了自然奇观。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/6.jpg" alt="Image 6">
+            <div class="slide-text">
+                <h2>第六张图片</h2>
+                <p>这是第六张幻灯片的内容，展示了海洋风光。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/7.jpg" alt="Image 7">
+            <div class="slide-text">
+                <h2>第七张图片</h2>
+                <p>这是第七张幻灯片的内容，展示了山川美景。</p>
+            </div>
+        </div>
+        
+        <div class="slide">
+            <img src="../../images/8.jpg" alt="Image 8">
+            <div class="slide-text">
+                <h2>第八张图片</h2>
+                <p>这是第八张幻灯片的内容，展示了夕阳西下。</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

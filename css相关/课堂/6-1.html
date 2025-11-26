@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap{
+            background-color: #eee;
+            overflow: hidden; /*溢出隐藏*/
+        }
+        .box{
+            width: 200px;
+            height: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            line-height: 200px;
+            font-size: 100px;
+            margin: 8px;
+            float: left; /* 浮动 */
+        }
+        /*如何恢复浮动后面正常的文档流？*/
+        /*1.bfc: overflow: hidden;
+          2.给浮动的父元素添加高度
+          3.clear: 三种方法{浮动后面的单独的元素，浮动后面的第一个元素，浮动后面的伪元素};
+        */
+    </style>
+</head>
+<body>
+    <h2>float流动和恢复正常文档流</h2>
+    <div class="wrap">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+    </div>
+    <h2>浮动之后</h2>
+
+</body>
+</html>

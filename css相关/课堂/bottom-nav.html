@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自适应底部导航栏</title>
+    <link rel="stylesheet" href="../../23006380230-程柯昕/font/iconfont.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding-bottom: 60px; /* 为底部导航栏留出空间 */
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #fff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #999;
+            transition: color 0.3s;
+            flex: 1;
+            padding: 5px 0;
+        }
+
+        .nav-item.active {
+            color: #1a73e8;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-text {
+            font-size: 12px;
+        }
+
+        .content h1 {
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>页面内容</h1>
+        <p>这是一个示例页面，展示了固定在底部的自适应导航栏。</p>
+        <p>导航栏会始终固定在页面底部，并且会根据屏幕宽度自适应调整。</p>
+        <p>无论屏幕如何缩放，底部导航栏都会保持在页面底部。</p>
+        <p>导航栏包含图标和文字，采用上图下文的布局方式。</p>
+        <p>当前选中的导航项会以不同的颜色显示。</p>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <i class="iconfont icon-shouye nav-icon"></i>
+            <span class="nav-text">首页</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="iconfont icon-xiaoxi nav-icon"></i>
+            <span class="nav-text">消息</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="iconfont icon-tianjia1 nav-icon"></i>
+            <span class="nav-text">发布</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="iconfont icon-kecheng nav-icon"></i>
+            <span class="nav-text">课程</span>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="iconfont icon-kefu nav-icon"></i>
+            <span class="nav-text">我的</span>
+        </a>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动导航栏示例网站</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            z-index: 1000;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        /* 内容区域样式 */
+        .content {
+            margin-top: 80px; /* 为固定导航栏留出空间 */
+            min-height: 2000px;
+        }
+
+        /* 区块通用样式 */
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section:nth-child(even) {
+            background-color: #ffffff;
+        }
+
+        .section:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #34495e;
+            margin-top: 40px;
+        }
+
+        .section-text {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 30px;
+        }
+
+        .feature-list li {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .placeholder-img {
+            width: 100%;
+            height: 300px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            border-radius: 8px;
+            color: #6c757d;
+            font-size: 20px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #2c3e50;
+            color: #ffffff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .nav-links {
+                margin-top: 15px;
+                justify-content: center;
+            }
+
+            .nav-links li {
+                margin: 0 15px;
+            }
+
+            .section {
+                padding: 60px 15px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .section-subtitle {
+                font-size: 20px;
+            }
+
+            .section-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">滚动示例</a>
+            <ul class="nav-links">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#features">特性</a></li>
+                <li><a href="#cases">案例</a></li>
+                <li><a href="#about">关于我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 内容区域 -->
+    <main class="content">
+        <!-- 首页区域 -->
+        <section class="section" id="home">
+            <h1 class="section-title">欢迎访问滚动导航示例网站</h1>
+            <p class="section-text">这是一个展示导航栏滚动显示/隐藏效果的单页网站示例。当您向下滚动页面超过一定距离时，导航栏会平滑隐藏；当您向上滚动时，导航栏会重新显示。</p>
+            <p class="section-text">本示例网站使用原生JavaScript实现了滚动监听功能，结合CSS3的过渡效果，创造出流畅的用户体验。继续向下滚动，探索更多内容。</p>
+            
+            <div class="placeholder-img">
+                [网站主图占位区域]
+            </div>
+            
+            <h2 class="section-subtitle">什么是导航栏滚动效果？</h2>
+            <p class="section-text">导航栏滚动效果是现代网页设计中的一种常见交互模式，它通过监听用户的滚动行为，动态调整导航栏的显示状态，从而最大化内容区域的可视空间，提供更好的阅读体验。</p>
+            <p class="section-text">当用户专注于阅读内容并向下滚动时，隐藏导航栏可以减少视觉干扰；当用户需要导航到其他部分时，向上滚动即可重新显示导航栏。</p>
+        </section>
+
+        <!-- 特性区域 -->
+        <section class="section" id="features">
+            <h1 class="section-title">核心特性</h1>
+            <p class="section-text">我们的导航栏滚动效果具有以下特点：</p>
+            
+            <ul class="feature-list">
+                <li>平滑的过渡动画，无卡顿现象</li>
+                <li>智能的滚动方向检测</li>
+                <li>可自定义的显示/隐藏阈值</li>
+                <li>响应式设计，适配各种屏幕尺寸</li>
+                <li>性能优化，避免频繁触发事件</li>
+                <li>语义化HTML结构，易于维护</li>
+            </ul>
+
+            <div class="card-container">
+                <div class="card">
+                    <h3 class="card-title">平滑过渡</h3>
+                    <p class="card-text">使用CSS3的transition属性，实现导航栏的平滑显示和隐藏效果，提升用户体验。</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">性能优化</h3>
+                    <p class="card-text">通过节流（throttling）技术，限制滚动事件的触发频率，确保页面性能流畅。</p>
+                </div>
+                <div class="card">
+                    <h3 class="card-title">响应式设计</h3>
+                    <p class="card-text">在移动设备和桌面设备上均能完美展示，提供一致的用户体验。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 案例展示区域 -->
+        <section class="section" id="cases">
+            <h1 class="section-title">案例展示</h1>
+            <p class="section-text">以下是一些成功应用导航栏滚动效果的网站案例，这些案例展示了不同的实现方式和设计风格。</p>
+            
+            <div class="placeholder-img">
+                [案例展示图片1]
+            </div>
+            
+            <h2 class="section-subtitle">案例分析</h2>
+            <p class="section-text">案例1：某知名新闻网站使用了类似的滚动导航效果，当用户阅读长篇文章时，导航栏会自动隐藏，让用户专注于内容；当需要导航时，只需向上滚动即可。</p>
+            
+            <p class="section-text">案例2：电商网站通常在产品详情页面采用这种技术，当用户浏览产品图片和描述时，导航栏会隐藏，提供更大的视觉空间；当用户准备购买或需要其他操作时，导航栏会重新出现。</p>
+            
+            <div class="placeholder-img">
+                [案例展示图片2]
+            </div>
+            
+            <p class="section-text">案例3：创意作品集网站经常使用全屏设计，滚动导航效果可以在不影响视觉体验的情况下，提供必要的导航功能。</p>
+        </section>
+
+        <!-- 关于我们区域 -->
+        <section class="section" id="about">
+            <h1 class="section-title">关于我们</h1>
+            <p class="section-text">我们专注于创建现代化、用户友好的网站体验。本示例网站展示了我们对细节的关注和对用户体验的重视。</p>
+            
+            <h2 class="section-subtitle">技术实现</h2>
+            <p class="section-text">本网站使用了以下技术和方法：</p>
+            
+            <ul class="feature-list">
+                <li>HTML5语义化标签，提高代码可读性和SEO优化</li>
+                <li>CSS3过渡效果和动画，创造流畅的视觉体验</li>
+                <li>原生JavaScript实现滚动监听和事件处理</li>
+                <li>响应式设计，确保在所有设备上都有良好的显示效果</li>
+                <li>性能优化技术，如事件节流和延迟加载</li>
+            </ul>
+            
+            <h2 class="section-subtitle">联系我们</h2>
+            <p class="section-text">如果您对我们的工作感兴趣，或者有任何问题，请随时联系我们。我们期待与您合作，共同创造出色的网络体验。</p>
+            
+            <div class="placeholder-img">
+                [联系表单占位区域]
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2023 滚动导航示例网站. 保留所有权利.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动显示/隐藏功能实现
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取导航栏元素
+            const navbar = document.getElementById('navbar');
+            
+            // 设置常量
+            const SCROLL_THRESHOLD = 150; // 滚动阈值，超过这个距离才开始隐藏/显示
+            const SCROLL_DELAY = 100; // 节流延迟时间（毫秒）
+            
+            // 变量初始化
+            let lastScrollTop = 0; // 上一次滚动位置
+            let timer = null; // 节流计时器
+            
+            // 滚动处理函数
+            function handleScroll() {
+                // 获取当前滚动位置
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 检查是否应该显示或隐藏导航栏
+                // 1. 如果滚动距离超过阈值
+                // 2. 并且当前滚动方向是向下
+                if (scrollTop > SCROLL_THRESHOLD && scrollTop > lastScrollTop) {
+                    // 向下滚动，隐藏导航栏
+                    navbar.classList.add('hidden');
+                } else if (scrollTop < lastScrollTop) {
+                    // 向上滚动，显示导航栏
+                    navbar.classList.remove('hidden');
+                }
+                
+                // 更新上一次滚动位置
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // 确保不会小于0
+            }
+            
+            // 节流函数，限制滚动事件触发频率
+            function throttle(func, delay) {
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    if (!timer) {
+                        timer = setTimeout(() => {
+                            func.apply(context, args);
+                            timer = null;
+                        }, delay);
+                    }
+                };
+            }
+            
+            // 为窗口添加滚动事件监听器，使用节流优化性能
+            window.addEventListener('scroll', throttle(handleScroll, SCROLL_DELAY));
+        });
+    </script>
+</body>
+</html>

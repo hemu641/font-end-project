@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手机事件测试</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 22px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        
+        .event-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .test-area {
+            width: 100%;
+            height: 200px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            overflow: hidden;
+        }
+        
+        .test-area:hover {
+            background-color: #d5dbdb;
+        }
+        
+        .test-area p {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 16px;
+            z-index: 1;
+        }
+        
+        /* 触摸指示器 */
+        .touch-indicator {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(52, 152, 219, 0.5);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.1s ease-out;
+            pointer-events: none;
+        }
+        
+        .touch-indicator.active {
+            transform: scale(1);
+        }
+        
+        /* 重力感应指示器 */
+        .gyro-indicator {
+            width: 50px;
+            height: 50px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            position: absolute;
+            transition: all 0.1s ease-out;
+        }
+        
+        /* 方向指示器 */
+        .orientation-indicator {
+            width: 60px;
+            height: 60px;
+            background-color: #2ecc71;
+            border-radius: 8px;
+            position: absolute;
+            transition: all 0.1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* 数据显示区域 */
+        .event-data {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-data p {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .event-data p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .event-data span {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        /* 触摸事件激活状态 */
+        #touch-area.active {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .event-section {
+                padding: 15px;
+            }
+            
+            .test-area {
+                height: 150px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            .event-section {
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .test-area {
+                height: 120px;
+            }
+            
+            .event-data p {
+                font-size: 13px;
+            }
+            
+            /* 优化触摸体验 */
+            .test-area {
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>手机事件测试</h1>
+        
+        <div class="event-section">
+            <h2>触摸事件测试</h2>
+            <div id="touch-area" class="test-area">
+                <p>请在此区域进行触摸操作</p>
+                <div class="touch-indicator"></div>
+            </div>
+            <div class="event-data" id="touch-data">
+                <p>事件类型: <span id="touch-type">无</span></p>
+                <p>触摸点: <span id="touch-count">0</span></p>
+                <p>坐标: <span id="touch-position">无</span></p>
+            </div>
+        </div>
+        
+        <div class="event-section">
+            <h2>重力感应测试</h2>
+            <div id="gyro-area" class="test-area">
+                <div class="gyro-indicator"></div>
+            </div>
+            <div class="event-data" id="gyro-data">
+                <p>加速度 X: <span id="accel-x">0</span></p>
+                <p>加速度 Y: <span id="accel-y">0</span></p>
+                <p>加速度 Z: <span id="accel-z">0</span></p>
+            </div>
+        </div>
+        
+        <div class="event-section">
+            <h2>设备方向测试</h2>
+            <div id="orientation-area" class="test-area">
+                <div class="orientation-indicator"></div>
+            </div>
+            <div class="event-data" id="orientation-data">
+                <p>方向角度: <span id="alpha">0</span></p>
+                <p>倾斜度: <span id="beta">0</span></p>
+                <p>旋转度: <span id="gamma">0</span></p>
+            </div>
+        </div>
+        
+        <div class="event-section">
+            <h2>设备运动测试</h2>
+            <div class="event-data" id="motion-data">
+                <p>旋转速度 X: <span id="rotation-rate-x">0</span></p>
+                <p>旋转速度 Y: <span id="rotation-rate-y">0</span></p>
+                <p>旋转速度 Z: <span id="rotation-rate-z">0</span></p>
+            </div>
+        </div>
+        
+        <div class="event-section">
+            <h2>设备可用性检查</h2>
+            <div class="event-data" id="device-capabilities">
+                <p>触摸支持: <span id="touch-support">检测中...</span></p>
+                <p>重力感应支持: <span id="accel-support">检测中...</span></p>
+                <p>设备方向支持: <span id="orientation-support">检测中...</span></p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const touchArea = document.getElementById('touch-area');
+            const touchIndicator = touchArea.querySelector('.touch-indicator');
+            const touchType = document.getElementById('touch-type');
+            const touchCount = document.getElementById('touch-count');
+            const touchPosition = document.getElementById('touch-position');
+            
+            const gyroArea = document.getElementById('gyro-area');
+            const gyroIndicator = gyroArea.querySelector('.gyro-indicator');
+            const accelX = document.getElementById('accel-x');
+            const accelY = document.getElementById('accel-y');
+            const accelZ = document.getElementById('accel-z');
+            
+            const orientationArea = document.getElementById('orientation-area');
+            const orientationIndicator = orientationArea.querySelector('.orientation-indicator');
+            const alpha = document.getElementById('alpha');
+            const beta = document.getElementById('beta');
+            const gamma = document.getElementById('gamma');
+            
+            const rotationRateX = document.getElementById('rotation-rate-x');
+            const rotationRateY = document.getElementById('rotation-rate-y');
+            const rotationRateZ = document.getElementById('rotation-rate-z');
+            
+            const touchSupport = document.getElementById('touch-support');
+            const accelSupport = document.getElementById('accel-support');
+            const orientationSupport = document.getElementById('orientation-support');
+            
+            // 检查设备功能支持
+            function checkDeviceCapabilities() {
+                // 检查触摸支持
+                if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                    touchSupport.textContent = '支持';
+                    touchSupport.style.color = '#2ecc71';
+                } else {
+                    touchSupport.textContent = '不支持';
+                    touchSupport.style.color = '#e74c3c';
+                }
+                
+                // 检查加速度传感器支持
+                if (window.DeviceMotionEvent) {
+                    accelSupport.textContent = '支持';
+                    accelSupport.style.color = '#2ecc71';
+                } else {
+                    accelSupport.textContent = '不支持';
+                    accelSupport.style.color = '#e74c3c';
+                }
+                
+                // 检查设备方向支持
+                if (window.DeviceOrientationEvent) {
+                    orientationSupport.textContent = '支持';
+                    orientationSupport.style.color = '#2ecc71';
+                } else {
+                    orientationSupport.textContent = '不支持';
+                    orientationSupport.style.color = '#e74c3c';
+                }
+            }
+            
+            // 初始化设备检查
+            checkDeviceCapabilities();
+            
+            // 触摸事件处理
+            function initTouchEvents() {
+                // 触摸开始事件
+                touchArea.addEventListener('touchstart', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    touchArea.classList.add('active');
+                    
+                    const touches = e.touches;
+                    touchType.textContent = 'touchstart';
+                    touchCount.textContent = touches.length;
+                    
+                    if (touches.length > 0) {
+                        const touch = touches[0];
+                        const rect = touchArea.getBoundingClientRect();
+                        const x = touch.clientX - rect.left;
+                        const y = touch.clientY - rect.top;
+                        touchPosition.textContent = `X: ${x.toFixed(0)}, Y: ${y.toFixed(0)}`;
+                        
+                        // 更新触摸指示器位置
+                        touchIndicator.style.left = `${x - 20}px`;
+                        touchIndicator.style.top = `${y - 20}px`;
+                        touchIndicator.classList.add('active');
+                    }
+                });
+                
+                // 触摸移动事件
+                touchArea.addEventListener('touchmove', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    touchType.textContent = 'touchmove';
+                    
+                    const touches = e.touches;
+                    touchCount.textContent = touches.length;
+                    
+                    if (touches.length > 0) {
+                        const touch = touches[0];
+                        const rect = touchArea.getBoundingClientRect();
+                        const x = touch.clientX - rect.left;
+                        const y = touch.clientY - rect.top;
+                        touchPosition.textContent = `X: ${x.toFixed(0)}, Y: ${y.toFixed(0)}`;
+                        
+                        // 更新触摸指示器位置
+                        touchIndicator.style.left = `${x - 20}px`;
+                        touchIndicator.style.top = `${y - 20}px`;
+                    }
+                });
+                
+                // 触摸结束事件
+                touchArea.addEventListener('touchend', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    touchArea.classList.remove('active');
+                    touchType.textContent = 'touchend';
+                    touchCount.textContent = '0';
+                    touchIndicator.classList.remove('active');
+                });
+                
+                // 触摸取消事件
+                touchArea.addEventListener('touchcancel', function(e) {
+                    e.preventDefault(); // 阻止默认行为
+                    touchArea.classList.remove('active');
+                    touchType.textContent = 'touchcancel';
+                    touchCount.textContent = '0';
+                    touchIndicator.classList.remove('active');
+                });
+                
+                // 鼠标事件作为备用（非触摸设备）
+                touchArea.addEventListener('mousedown', function(e) {
+                    touchArea.classList.add('active');
+                    touchType.textContent = 'mousedown';
+                    touchCount.textContent = '1';
+                    
+                    const rect = touchArea.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    touchPosition.textContent = `X: ${x.toFixed(0)}, Y: ${y.toFixed(0)}`;
+                    
+                    touchIndicator.style.left = `${x - 20}px`;
+                    touchIndicator.style.top = `${y - 20}px`;
+                    touchIndicator.classList.add('active');
+                });
+                
+                touchArea.addEventListener('mousemove', function(e) {
+                    if (e.buttons === 1) { // 只有在鼠标按下时才响应移动
+                        touchType.textContent = 'mousemove';
+                        
+                        const rect = touchArea.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        touchPosition.textContent = `X: ${x.toFixed(0)}, Y: ${y.toFixed(0)}`;
+                        
+                        touchIndicator.style.left = `${x - 20}px`;
+                        touchIndicator.style.top = `${y - 20}px`;
+                    }
+                });
+                
+                touchArea.addEventListener('mouseup', function() {
+                    touchArea.classList.remove('active');
+                    touchType.textContent = 'mouseup';
+                    touchCount.textContent = '0';
+                    touchIndicator.classList.remove('active');
+                });
+                
+                touchArea.addEventListener('mouseleave', function() {
+                    touchArea.classList.remove('active');
+                    touchType.textContent = 'mouseleave';
+                    touchCount.textContent = '0';
+                    touchIndicator.classList.remove('active');
+                });
+            }
+            
+            // 重力感应事件处理
+            function initAccelerometerEvents() {
+                if (window.DeviceMotionEvent) {
+                    window.addEventListener('devicemotion', function(e) {
+                        const acceleration = e.acceleration;
+                        const rotationRate = e.rotationRate;
+                        
+                        // 更新加速度数据
+                        if (acceleration) {
+                            accelX.textContent = acceleration.x ? acceleration.x.toFixed(2) : '0';
+                            accelY.textContent = acceleration.y ? acceleration.y.toFixed(2) : '0';
+                            accelZ.textContent = acceleration.z ? acceleration.z.toFixed(2) : '0';
+                            
+                            // 更新重力感应指示器位置
+                            const rect = gyroArea.getBoundingClientRect();
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+                            
+                            // 根据加速度计算偏移位置
+                            const offsetX = (acceleration.y || 0) * 20;
+                            const offsetY = (acceleration.x || 0) * 20;
+                            
+                            const newX = centerX - 25 + offsetX;
+                            const newY = centerY - 25 + offsetY;
+                            
+                            // 限制在区域内
+                            const boundedX = Math.max(0, Math.min(rect.width - 50, newX));
+                            const boundedY = Math.max(0, Math.min(rect.height - 50, newY));
+                            
+                            gyroIndicator.style.left = `${boundedX}px`;
+                            gyroIndicator.style.top = `${boundedY}px`;
+                        }
+                        
+                        // 更新旋转速度数据
+                        if (rotationRate) {
+                            rotationRateX.textContent = rotationRate.alpha ? rotationRate.alpha.toFixed(2) : '0';
+                            rotationRateY.textContent = rotationRate.beta ? rotationRate.beta.toFixed(2) : '0';
+                            rotationRateZ.textContent = rotationRate.gamma ? rotationRate.gamma.toFixed(2) : '0';
+                        }
+                    });
+                }
+            }
+            
+            // 设备方向事件处理
+            function initOrientationEvents() {
+                if (window.DeviceOrientationEvent) {
+                    window.addEventListener('deviceorientation', function(e) {
+                        // 更新方向数据
+                        alpha.textContent = e.alpha ? e.alpha.toFixed(2) : '0';
+                        beta.textContent = e.beta ? e.beta.toFixed(2) : '0';
+                        gamma.textContent = e.gamma ? e.gamma.toFixed(2) : '0';
+                        
+                        // 更新方向指示器位置和旋转
+                        const rect = orientationArea.getBoundingClientRect();
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        // 根据设备方向计算位置和旋转
+                        let rotateDeg = 0;
+                        let offsetX = 0;
+                        let offsetY = 0;
+                        
+                        if (e.gamma) {
+                            offsetX = e.gamma * 2;
+                        }
+                        
+                        if (e.beta) {
+                            offsetY = e.beta * 2;
+                        }
+                        
+                        if (e.alpha) {
+                            rotateDeg = e.alpha;
+                        }
+                        
+                        const newX = centerX - 30 + offsetX;
+                        const newY = centerY - 30 + offsetY;
+                        
+                        // 限制在区域内
+                        const boundedX = Math.max(0, Math.min(rect.width - 60, newX));
+                        const boundedY = Math.max(0, Math.min(rect.height - 60, newY));
+                        
+                        orientationIndicator.style.left = `${boundedX}px`;
+                        orientationIndicator.style.top = `${boundedY}px`;
+                        orientationIndicator.style.transform = `rotate(${rotateDeg}deg)`;
+                    });
+                }
+            }
+            
+            // 初始化所有事件
+            initTouchEvents();
+            initAccelerometerEvents();
+            initOrientationEvents();
+            
+            console.log('手机事件测试页面初始化完成');
+        });
+    </script>
+</body>
+</html>

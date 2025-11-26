@@ -1,0 +1,44 @@
+{
+  "id": "5054960",
+  "name": "知乎移动端",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1471605",
+      "name": "add",
+      "font_class": "add",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "45062103",
+      "name": "AI_知乎直答_人工智能",
+      "font_class": "AI_zhihuzhida_rengongzhineng",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "11359973",
+      "name": "头像",
+      "font_class": "touxiang",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "12103866",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "29219765",
+      "name": "消息",
+      "font_class": "news",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    }
+  ]
+}

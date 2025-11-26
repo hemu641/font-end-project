@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .header{
+            background-color: #ff0;
+            height: 60px;
+            position: relative; /*相对定位*/  
+        }
+        /*logo,login绝对定位：黑底白字*/
+        .logo{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background-color: black;
+        }
+        .login{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            background-color: black;
+        }
+        .wrap{
+            width: 1200px;
+            margin: 0 auto;
+        }
+        .main{
+            width: 350px;
+            height: 500px;
+            background-color: #d75d5d;
+            float: left;
+        }
+        .aside{
+            width: 350px;
+            height: 500px;
+            background-color: #35a198;
+            float: left;
+            margin-left: 20px;
+        }
+        .myExt{
+            width: 350px;
+            height: 500px;
+            background-color: #b4f2ba;
+            float: left;
+            margin-left: 20px;
+        }
+        .ad{
+            height: 40px;
+            background-color: #ff0;
+            clear: both; /*清除浮动*/
+        }
+        .footer{
+            height: 40px;
+            background-color: rgb(249, 218, 19);
+        }
+        .fixed{
+            width: 100px;
+            height: 100px;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            line-height: 100px;
+            font-size: 20px;
+            position: fixed; /*固定定位*/
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>程柯昕：css布局</h2>
+    <div class="header">
+        <div class="logo">logo</div>
+        <div class="login">login</div>
+    </div>
+    <div class="nav"></div>
+    <div class="wrap">
+        <div class="main"></div>
+        <div class="aside"></div>
+        <!--第三列-->
+        <div class="myExt"></div>
+    </div>
+    <div class="ad"></div>
+    <div class="footer"></div>
+    <div class="fixed">固定sticked</div>
+</body>
+</html>

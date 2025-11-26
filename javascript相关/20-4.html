@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手风琴与折叠面板</title>
+    <!-- CSS样式将在这里添加 -->
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            /* 平板设备样式 */
+            body {
+                font-size: 16px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .container {
+                padding: 15px;
+                max-width: 100%;
+            }
+            
+            .accordion-section,
+            .collapse-section {
+                margin-bottom: 30px;
+            }
+            
+            .accordion-header, 
+            .collapse-header {
+                padding: 12px 15px;
+            }
+            
+            .accordion-content.active, 
+            .collapse-content.active {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* 移动设备样式 */
+            body {
+                font-size: 14px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .accordion-section,
+            .collapse-section {
+                margin-bottom: 20px;
+            }
+            
+            .accordion-header, 
+            .collapse-header {
+                padding: 10px 12px;
+            }
+            
+            .accordion-content.active, 
+            .collapse-content.active {
+                padding: 12px;
+            }
+            
+            /* 优化触摸体验 */
+            .accordion-header, 
+            .collapse-header {
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* 标题样式 */
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 28px;
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+            font-size: 22px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        /* 部分间距 */
+        .accordion-section,
+        .collapse-section {
+            margin-bottom: 40px;
+        }
+        
+        /* 手风琴样式 */
+        .accordion {
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        
+        .accordion-item {
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 手风琴头部按钮 */
+        .accordion-header {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+        
+        .accordion-header.active {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        /* 图标样式 */
+        .icon {
+            font-size: 18px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .icon {
+            transform: rotate(45deg);
+        }
+        
+        /* 手风琴内容 */
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: white;
+        }
+        
+        .accordion-content.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        /* 折叠面板样式 */
+        .collapse {
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        
+        .collapse-item {
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .collapse-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* 折叠面板头部按钮 */
+        .collapse-header {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            color: #495057;
+        }
+        
+        .collapse-header:hover {
+            background-color: #e9ecef;
+        }
+        
+        .collapse-header.active {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .collapse-header.active .icon {
+            transform: rotate(45deg);
+        }
+        
+        /* 折叠面板内容 */
+        .collapse-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: white;
+        }
+        
+        .collapse-content.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+        
+        /* 内容样式 */
+        p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>手风琴与折叠面板演示</h1>
+        
+        <!-- 手风琴部分 -->
+        <section class="accordion-section">
+            <h2>手风琴组件（一次只展开一个）</h2>
+            <div class="accordion" id="accordionExample">
+                <!-- 手风琴项1 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="accordion-content-1">
+                        <span class="title">手风琴面板 1</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="accordion-content-1" class="accordion-content">
+                        <p>这是手风琴面板1的内容。手风琴组件的特点是一次只能展开一个面板，当点击新的面板标题时，之前展开的面板会自动折叠起来。</p>
+                        <p>手风琴组件常用于节省空间，展示分类信息，或者需要按顺序查看的内容集合。</p>
+                    </div>
+                </div>
+                
+                <!-- 手风琴项2 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="accordion-content-2">
+                        <span class="title">手风琴面板 2</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="accordion-content-2" class="accordion-content">
+                        <p>这是手风琴面板2的内容。手风琴设计可以有效地组织长内容，同时保持界面的整洁。</p>
+                        <ul>
+                            <li>可以包含列表项</li>
+                            <li>支持各种HTML元素</li>
+                            <li>通过JavaScript实现交互</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 手风琴项3 -->
+                <div class="accordion-item">
+                    <button class="accordion-header" data-target="accordion-content-3">
+                        <span class="title">手风琴面板 3</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="accordion-content-3" class="accordion-content">
+                        <p>这是手风琴面板3的内容。在移动端应用中，手风琴组件特别有用，可以帮助用户聚焦于当前需要查看的信息。</p>
+                        <p>通过添加适当的CSS过渡效果，可以让展开和折叠的过程更加平滑，提升用户体验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 折叠面板部分 -->
+        <section class="collapse-section">
+            <h2>折叠面板组件（可同时展开多个）</h2>
+            <div class="collapse" id="collapseExample">
+                <!-- 折叠项1 -->
+                <div class="collapse-item">
+                    <button class="collapse-header" data-target="collapse-content-1">
+                        <span class="title">折叠面板 1</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="collapse-content-1" class="collapse-content">
+                        <p>这是折叠面板1的内容。与手风琴不同，折叠面板允许同时展开多个内容区域。</p>
+                        <p>折叠面板适用于需要同时参考多个部分内容的场景，如设置选项、详细信息等。</p>
+                    </div>
+                </div>
+                
+                <!-- 折叠项2 -->
+                <div class="collapse-item">
+                    <button class="collapse-header" data-target="collapse-content-2">
+                        <span class="title">折叠面板 2</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="collapse-content-2" class="collapse-content">
+                        <p>这是折叠面板2的内容。折叠面板设计给用户提供了更大的灵活性，可以根据需要展开或折叠任意多个面板。</p>
+                        <ul>
+                            <li>支持同时展开多个面板</li>
+                            <li>每个面板独立控制</li>
+                            <li>适合复杂内容的组织</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 折叠项3 -->
+                <div class="collapse-item">
+                    <button class="collapse-header" data-target="collapse-content-3">
+                        <span class="title">折叠面板 3</span>
+                        <span class="icon">+</span>
+                    </button>
+                    <div id="collapse-content-3" class="collapse-content">
+                        <p>这是折叠面板3的内容。通过简单的JavaScript逻辑，我们可以实现独立的折叠控制，让用户能够更灵活地管理显示内容。</p>
+                        <p>无论是手风琴还是折叠面板，都能有效提升长页面的用户体验，减少信息过载。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript代码将在这里添加 -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 手风琴功能实现
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+            
+            accordionHeaders.forEach(header => {
+                // 添加点击事件
+                header.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+                    
+                    // 检查当前是否已展开
+                    const isActive = this.classList.contains('active');
+                    
+                    // 关闭所有手风琴面板（排他性）
+                    accordionHeaders.forEach(h => {
+                        h.classList.remove('active');
+                        const content = document.getElementById(h.getAttribute('data-target'));
+                        content.classList.remove('active');
+                    });
+                    
+                    // 如果当前不是激活状态，则激活它
+                    if (!isActive) {
+                        this.classList.add('active');
+                        targetContent.classList.add('active');
+                    }
+                    
+                    // 记录操作
+                    console.log(`手风琴面板${isActive ? '关闭' : '打开'}: ${this.querySelector('.title').textContent}`);
+                });
+                
+                // 添加键盘导航支持
+                header.addEventListener('keydown', function(e) {
+                    // 回车键或空格键触发点击
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+                
+                // 设置为可聚焦
+                header.setAttribute('tabindex', '0');
+            });
+            
+            // 折叠面板功能实现
+            const collapseHeaders = document.querySelectorAll('.collapse-header');
+            
+            collapseHeaders.forEach(header => {
+                // 添加点击事件
+                header.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const targetContent = document.getElementById(targetId);
+                    
+                    // 切换当前面板的状态（独立控制）
+                    this.classList.toggle('active');
+                    targetContent.classList.toggle('active');
+                    
+                    // 记录操作
+                    const isActive = this.classList.contains('active');
+                    console.log(`折叠面板${isActive ? '打开' : '关闭'}: ${this.querySelector('.title').textContent}`);
+                });
+                
+                // 添加键盘导航支持
+                header.addEventListener('keydown', function(e) {
+                    // 回车键或空格键触发点击
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+                
+                // 设置为可聚焦
+                header.setAttribute('tabindex', '0');
+            });
+            
+            // 默认展开第一个手风琴面板
+            if (accordionHeaders.length > 0) {
+                accordionHeaders[0].click();
+            }
+            
+            console.log('手风琴和折叠面板功能初始化完成');
+        });
+    </script>
+</body>
+</html>

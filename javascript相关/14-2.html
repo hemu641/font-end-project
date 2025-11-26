@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：变量</title>
+</head>
+<body>
+    <script>
+      var a = 1,b=2;
+      console.log((a+b)*2/3-1,++a+b++,a>b?10:5,8%3,10%5); 
+      console.log(true && false,true || false,!true); // false,true,false
+      var c = "Cheng kexin",d=true,e=undefined,f=null,o={name:"Cheng kexin"};
+      // javascript 变量类型 (6+1+1): number,string,boolean,undefined,object,function,null
+      console.log(typeof a,typeof b,typeof c,typeof d,typeof e,typeof f,typeof o);
+      console.log(11+2,"11"+2,"11"+2+3,"11"-2,"y11"-2); // 13,"112","1123",9,NaN
+        //   Nan: Not a Number
+      console.log(true==1,true===1,null==null,undefined==undefined);    
+      console.log(null===undefined,NaN==NaN,null==0); 
+      console.log(isNaN(true),isNaN(NaN),isNaN(undefined),isNaN("Cheng kexin")); // isNaN: 判断是否为NaN
+    // 数字转换
+    console.log(parseInt(7.88),parseFloat(7.88),parseFloat("a7.88"));
+    // 判断一个变量是不是整数
+    console.log(Number.isInteger(7.88),parseInt(b)==parseFloat(b));
+    // 取b,保留小数点的后一位
+    console.log(b.toFixed(1));
+    // Math.floor: 向下取整, Math.ceil: 向上取整, Math.round: 四舍五入
+    console.log(Math.floor(6.88),Math.ceil(6.88),Math.round(6.88));
+    console.log(0.1+0.2,0.1+0.2==0.3) // 0.30000000000000004,false
+    </script>
+</body>
+</html>

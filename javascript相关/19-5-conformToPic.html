@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导航栏滚动效果示例</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            height: 70px;
+        }
+
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #3498db;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: #3498db;
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* 内容区域样式 */
+        .content {
+            margin-top: 70px; /* 为固定导航栏留出空间 */
+            min-height: 3000px;
+        }
+
+        /* 英雄区域样式 */
+        .hero-section {
+            height: calc(100vh - 70px);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: #667eea;
+            border: 2px solid white;
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 区块通用样式 */
+        .section {
+            padding: 100px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .section:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .section-title {
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: #2c3e50;
+            text-align: center;
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+
+        .section-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f4f8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #3498db;
+        }
+
+        .card-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* 特性区块样式 */
+        .features-section {
+            background-color: #ffffff;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .feature-content p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* 数据统计区块 */
+        .stats-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 80px 30px;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .stat-item p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 60px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo span {
+            color: #3498db;
+        }
+
+        .footer-links h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-links h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #3498db;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #3498db;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: #2c3e50;
+                cursor: pointer;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .section {
+                padding: 80px 20px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .feature-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .feature-icon {
+                margin: 0 auto 20px;
+            }
+        }
+
+        /* 移动端菜单按钮（默认隐藏） */
+        .mobile-menu-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">Demo<span>Site</span></a>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#features">特性</a></li>
+                <li><a href="#services">服务</a></li>
+                <li><a href="#portfolio">作品</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- 内容区域 -->
+    <main class="content">
+        <!-- 英雄区域 -->
+        <section class="hero-section" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title">创建令人惊艳的用户体验</h1>
+                <p class="hero-subtitle">我们专注于打造现代化、高性能的网站，为您的业务提供强大的在线展示平台。</p>
+                <a href="#features" class="btn btn-primary">了解更多</a>
+            </div>
+        </section>
+
+        <!-- 服务区块 -->
+        <section class="section" id="services">
+            <h2 class="section-title">我们的服务</h2>
+            <div class="section-content">
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">网站设计</h3>
+                    <p class="card-text">创建美观、易用的网站设计，注重用户体验和视觉效果，帮助您的品牌脱颖而出。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">前端开发</h3>
+                    <p class="card-text">使用最新的前端技术，构建响应式、高性能的网站，确保在所有设备上都有出色表现。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">SEO优化</h3>
+                    <p class="card-text">实施专业的搜索引擎优化策略，提高您网站的搜索排名，吸引更多潜在客户。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">品牌设计</h3>
+                    <p class="card-text">打造独特的品牌形象，包括标志设计、色彩方案和品牌指南，提升品牌识别度。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">移动应用</h3>
+                    <p class="card-text">开发原生和混合移动应用，为您的用户提供随时随地的服务体验。</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✓</div>
+                    <h3 class="card-title">内容创作</h3>
+                    <p class="card-text">提供专业的内容创作服务，包括文案撰写、图像处理和视频制作，丰富您的网站内容。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特性区块 -->
+        <section class="section features-section" id="features">
+            <h2 class="section-title">核心特性</h2>
+            <div class="feature-item">
+                <div class="feature-icon">1</div>
+                <div class="feature-content">
+                    <h3>响应式设计</h3>
+                    <p>我们的网站在所有设备上都能完美展示，从桌面电脑到移动设备，提供一致的用户体验。</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">2</div>
+                <div class="feature-content">
+                    <h3>性能优化</h3>
+                    <p>通过先进的性能优化技术，确保您的网站加载迅速，运行流畅，提升用户满意度。</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">3</div>
+                <div class="feature-content">
+                    <h3>现代设计</h3>
+                    <p>采用最新的设计趋势和技术，打造视觉吸引力强、符合现代审美的网站界面。</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">4</div>
+                <div class="feature-content">
+                    <h3>用户友好</h3>
+                    <p>注重用户体验设计，确保网站直观易用，帮助用户轻松找到所需信息和完成目标操作。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数据统计区块 -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>成功项目</p>
+                </div>
+                <div class="stat-item">
+                    <h3>200+</h3>
+                    <p>满意客户</p>
+                </div>
+                <div class="stat-item">
+                    <h3>10+</h3>
+                    <p>行业经验</p>
+                </div>
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>客户留存</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 作品展示区块 -->
+        <section class="section" id="portfolio">
+            <h2 class="section-title">精选作品</h2>
+            <div class="section-content">
+                <div class="card">
+                    <div style="height: 200px; background-color: #e9ecef; border-radius: 8px; margin-bottom: 20px;"></div>
+                    <h3 class="card-title">企业官网设计</h3>
+                    <p class="card-text">为某科技公司设计的现代化企业官网，提升品牌形象和用户转化率。</p>
+                </div>
+                <div class="card">
+                    <div style="height: 200px; background-color: #e9ecef; border-radius: 8px; margin-bottom: 20px;"></div>
+                    <h3 class="card-title">电商平台开发</h3>
+                    <p class="card-text">全功能电商平台，支持商品展示、购物车、支付等完整功能。</p>
+                </div>
+                <div class="card">
+                    <div style="height: 200px; background-color: #e9ecef; border-radius: 8px; margin-bottom: 20px;"></div>
+                    <h3 class="card-title">移动应用界面</h3>
+                    <p class="card-text">健康管理应用的用户界面设计，简洁直观，功能齐全。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们区块 -->
+        <section class="section" id="contact">
+            <h2 class="section-title">联系我们</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 40px; font-size: 18px; color: #666;">如果您对我们的服务感兴趣，或者有任何问题，请随时联系我们。我们期待与您合作！</p>
+            <div style="max-width: 600px; margin: 0 auto; padding: 30px; background-color: white; border-radius: 12px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);">
+                <div style="height: 300px; background-color: #f0f4f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #666;">联系表单占位区域</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <div class="footer-logo">Demo<span>Site</span></div>
+                <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.7;">我们致力于为客户提供高质量的网站设计和开发服务，帮助企业在数字时代取得成功。</p>
+            </div>
+            <div class="footer-links">
+                <h4>快速链接</h4>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#features">特性</a></li>
+                    <li><a href="#services">服务</a></li>
+                    <li><a href="#portfolio">作品</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>服务</h4>
+                <ul>
+                    <li><a href="#">网站设计</a></li>
+                    <li><a href="#">前端开发</a></li>
+                    <li><a href="#">SEO优化</a></li>
+                    <li><a href="#">品牌设计</a></li>
+                    <li><a href="#">移动应用</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>联系方式</h4>
+                <ul>
+                    <li><a href="#">电话：400-123-4567</a></li>
+                    <li><a href="#">邮箱：contact@demosite.com</a></li>
+                    <li><a href="#">地址：北京市朝阳区XX大厦</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 DemoSite. 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 导航栏滚动显示/隐藏功能实现
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取导航栏元素
+            const navbar = document.getElementById('navbar');
+            
+            // 设置常量
+            const SCROLL_THRESHOLD = 200; // 滚动阈值，超过这个距离才开始隐藏/显示
+            const SCROLL_DELAY = 80; // 节流延迟时间（毫秒）
+            
+            // 变量初始化
+            let lastScrollTop = 0; // 上一次滚动位置
+            let timer = null; // 节流计时器
+            
+            // 滚动处理函数
+            function handleScroll() {
+                // 获取当前滚动位置
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // 检查是否应该显示或隐藏导航栏
+                // 1. 如果滚动距离超过阈值
+                // 2. 并且当前滚动方向是向下
+                if (scrollTop > SCROLL_THRESHOLD && scrollTop > lastScrollTop) {
+                    // 向下滚动，隐藏导航栏
+                    navbar.classList.add('hidden');
+                } else if (scrollTop < lastScrollTop || scrollTop <= SCROLL_THRESHOLD) {
+                    // 向上滚动或接近顶部，显示导航栏
+                    navbar.classList.remove('hidden');
+                }
+                
+                // 更新上一次滚动位置
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // 确保不会小于0
+            }
+            
+            // 节流函数，限制滚动事件触发频率
+            function throttle(func, delay) {
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    if (!timer) {
+                        timer = setTimeout(() => {
+                            func.apply(context, args);
+                            timer = null;
+                        }, delay);
+                    }
+                };
+            }
+            
+            // 为窗口添加滚动事件监听器，使用节流优化性能
+            window.addEventListener('scroll', throttle(handleScroll, SCROLL_DELAY));
+
+            // 导航链接活跃状态处理
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('section');
+
+            function setActiveNavLink() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= (sectionTop - 100)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', setActiveNavLink);
+        });
+    </script>
+</body>
+</html>

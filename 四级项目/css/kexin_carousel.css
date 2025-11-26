@@ -1,0 +1,275 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #212025;
+}
+
+/* 主容器 */
+.cheng_main {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* 轮播容器 */
+.cheng_carousel-container {
+    background-color: #FBFAFF;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: none;
+}
+
+/* 头部样式 */
+.cheng_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 12px; */
+}
+
+.cheng_title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #212025;
+    margin: 0;
+}
+
+.cheng_knowledge-square {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #6650D1;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.cheng_knowledge-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    vertical-align: middle;
+}
+
+/* 轮播包装器 */
+.cheng_carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 100px;
+}
+
+/* 手机适配 */
+@media (max-width: 768px) {
+    .cheng_main {
+        padding: 8px;
+    }
+    
+    .cheng_carousel-container {
+        padding: 12px 14px;
+    }
+    
+    .cheng_header {
+        /* margin-bottom: 12px; */
+    }
+    
+    .cheng_title {
+        font-size: 15px;
+    }
+    
+    .cheng_knowledge-square {
+        font-size: 11px;
+    }
+    
+    .cheng_carousel-wrapper {
+        height: 90px;
+    }
+    
+    /* 轮播项手机适配 */
+    .cheng_carousel-item {
+        padding: 5px;
+    }
+    
+    /* 轮播图片手机适配 */
+    .cheng_carousel-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 8px;
+    }
+    
+    /* 文字样式手机适配 */
+    .cheng_content-title {
+        font-size: 13px;
+        margin-bottom: 2px;
+        line-height: 1.2;
+    }
+    
+    .cheng_content-desc {
+        font-size: 11px;
+        margin-bottom: 5px;
+        line-height: 1.2;
+    }
+    
+    /* 分页标识符手机适配 */
+    .cheng_pagination {
+        /* margin-top: 6px; */
+    }
+}
+
+/* 轮播轨道 */
+.cheng_carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+/* 轮播项 */
+.cheng_carousel-item {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    padding: 6px;
+    background-color: #FBFAFF;
+    border-radius: 8px;
+    margin: 0;
+}
+
+/* 轮播图片 */
+.cheng_carousel-image {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+    align-self: center;
+}
+
+/* 轮播内容 */
+.cheng_carousel-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cheng_content-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #212025;
+    margin-bottom: 3px;
+    line-height: 1.3;
+}
+
+.cheng_content-desc {
+    font-size: 12px;
+    color: #949398;
+    margin-bottom: 6px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 作者信息 */
+.cheng_author-info {
+    display: flex;
+    align-items: center;
+    font-size: 11px;
+    color: #949398;
+}
+
+/* 手机适配 */
+@media (max-width: 768px) {
+    .cheng_carousel-wrapper {
+        height: 100px;
+    }
+    
+    .cheng_carousel-item {
+        padding: 6px;
+        margin: 0;
+    }
+    
+    .cheng_carousel-image {
+        width: 65px;
+        height: 65px;
+        margin-right: 8px;
+    }
+    
+    .cheng_content-title {
+        font-size: 13px;
+        margin-bottom: 3px;
+    }
+    
+    .cheng_content-desc {
+        font-size: 11px;
+        margin-bottom: 6px;
+    }
+    
+    .cheng_author-info {
+        font-size: 10px;
+    }
+    
+    .cheng_author-avatar {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+}
+
+.cheng_author-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
+.cheng_author-name {
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+.cheng_subscriber-count, .cheng_content-count {
+    margin-right: 8px;
+}
+
+/* 分页标识符 */
+.cheng_pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cheng_pagination-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #ECEBF1;
+    margin: 0 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cheng_pagination-dot.active {
+    background-color: #2073F0;
+    width: 6px;
+    height: 6px;
+}
+
+/* 页脚样式 */
+.cheng_footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #949398;
+    border-top: 1px solid #F0F0F0;
+}

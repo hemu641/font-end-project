@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：JSON</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .clist {
+            list-style: none;
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .clist li {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        .clist li:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .clist li:last-child {
+            border-bottom: none;
+        }
+        
+        .clist li strong {
+            color: #2c3e50;
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .clist li {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <ul class="clist"></ul>
+    <script>
+        // 定义一个JSON数组：三个成员，对象有姓名，年龄，性别，身高四个属性
+        const json = [
+            {
+                name: "张三",
+                age: 18,
+                sex: "男",
+                height: 1.8
+            },
+            {
+                name: "李四",
+                age: 19,
+                sex: "男",
+                height: 1.9
+            },
+            {
+                name: "王五",
+                age: 20,
+                sex: "男",
+                height: 2.0
+            }
+        ];
+
+        // 循环数组，将数据渲染到 class="clist" 的 ul 中,每个成员是一个 li
+        const clist = document.querySelector(".clist");
+        for (let i = 0; i < json.length; i++) {
+            const item = json[i];
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>姓名：</strong>${item.name}，<strong>年龄：</strong>${item.age}，<strong>性别：</strong>${item.sex}，<strong>身高：</strong>${item.height}`;
+            clist.appendChild(li);
+        }
+    </script>
+</body>
+</html>

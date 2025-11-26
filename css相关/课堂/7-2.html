@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：一左一右布局</title>
+    <style>
+        h2{
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .title{
+            display: flex;
+            font-size: 14px;
+            width: 600px;
+            margin: 20px;
+            padding: 10px;
+        }
+        .title:first-child{
+            border-bottom: 1px solid #036;  
+        }
+        .title:first-child h2{
+            flex-grow: 1; /*标题占满剩余空间*/
+        }
+        .title:nth-child(2){
+            border-top: 1px solid #000;
+            justify-content: space-between;
+        }
+        .title:nth-child(3){
+            position: relative;
+            border: 1px dashed #999;
+        }
+        .title:nth-child(3) a{
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <h2>程柯昕的标题</h2>
+        <a href="#">更多>></a>
+    </div>
+
+    <div class="title">
+        <h2>程柯昕的标题</h2>
+        <a href="#">更多>></a>
+    </div>
+
+    <div class="title">
+        <h2>程柯昕的标题</h2>
+        <a href="#">更多>></a>
+    </div>
+</body>
+</html>

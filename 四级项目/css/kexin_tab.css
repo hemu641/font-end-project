@@ -1,0 +1,261 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: #3B3B3B;
+    line-height: 1.4;
+}
+
+/* 主容器 */
+.cheng_tab-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #000000;
+}
+
+/* Tab内容区域 */
+.cheng_tab-content {
+    background-color: #000000;
+    margin: 0 10px;
+}
+
+/* Tab面板 */
+.cheng_tab-panel {
+    display: none;
+    background-color: #000000;
+}
+
+/* 激活的Tab面板 */
+.cheng_tab-panel.active {
+    display: block;
+    background-color: #000000;
+}
+
+/* 问题列表 */
+.cheng_question-list {
+    list-style: none;
+    background-color: #FFFFFF;
+    margin: 0 10px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 问题项 */
+.cheng_question-item {
+    background-color: #FFFFFF;
+    padding: 15px;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* margin-bottom: 10px; */
+}
+
+/* 第一个问题项 */
+.cheng_question-list .cheng_question-item:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+/* 最后一个问题项 */
+.cheng_question-list .cheng_question-item:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+/* Tab头部 */
+.cheng_tab-header {
+    background-color: #000000;
+    padding: 10px 0;
+    margin-bottom: 10px;
+}
+
+/* Tab列表 */
+.cheng_tab-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Tab项 */
+.cheng_tab-item {
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #3B3B3B;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #F5F5F5;
+    margin: 0 3px;
+}
+
+/* 激活的Tab项 */
+.cheng_tab-item.active {
+    background-color: #FFFFFF;
+    color: #813D47;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab内容区域 */
+.cheng_tab-content {
+    background-color: #FFFFFF;
+}
+
+/* Tab面板 */
+.cheng_tab-panel {
+    display: none;
+}
+
+/* 激活的Tab面板 */
+.cheng_tab-panel.active {
+    display: block;
+}
+
+/* 问题列表 */
+.cheng_question-list {
+    list-style: none;
+}
+
+/* 问题项 */
+.cheng_question-item {
+    background-color: #FFFFFF;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* 问题信息 */
+.cheng_question-info {
+    flex: 1;
+    margin-right: 12px;
+}
+
+/* 问题标题 */
+.cheng_question-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4D4D4D;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+/* 问题统计 */
+.cheng_question-stats {
+    font-size: 12px;
+    color: #999999;
+    line-height: 1.3;
+}
+
+/* 去回答按钮 */
+.cheng_answer-btn {
+    background-color: #05176B;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.cheng_answer-btn:hover {
+    background-color: #04135a;
+}
+
+/* 页脚样式 */
+.cheng_footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #949398;
+    border-top: 1px solid #333333;
+    background-color: #000000;
+}
+
+/* 手机适配 */
+@media (max-width: 768px) {
+    .cheng_tab-container {
+        padding: 8px;
+    }
+    
+    .cheng_tab-header {
+        padding: 8px 0;
+        margin-bottom: 8px;
+    }
+    
+    .cheng_tab-list {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .cheng_tab-item {
+        padding: 7px 10px;
+        font-size: 13px;
+        border-radius: 14px;
+        margin: 0 3px;
+    }
+    
+    .cheng_question-list {
+        margin: 0 8px;
+        border-radius: 6px;
+    }
+    
+    .cheng_question-item {
+        padding: 12px;
+        margin: 0;
+        flex-direction: row;
+        align-items: flex-start;
+        border-radius: 0;
+        /* margin-bottom: 8px; */
+    }
+    
+    /* 手机模式下第一个问题项 */
+    .cheng_question-list .cheng_question-item:first-child {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+    
+    /* 手机模式下最后一个问题项 */
+    .cheng_question-list .cheng_question-item:last-child {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    
+    .cheng_question-info {
+        margin-right: 10px;
+        margin-bottom: 0;
+        width: auto;
+        flex: 1;
+    }
+    
+    .cheng_question-title {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+    
+    .cheng_question-stats {
+        font-size: 11px;
+    }
+    
+    .cheng_answer-btn {
+        align-self: flex-end;
+        padding: 7px 14px;
+        font-size: 12px;
+        border-radius: 14px;
+    }
+}

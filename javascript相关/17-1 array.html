@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程柯昕：数组Array</title>
+</head>
+<body>
+    <script>
+        let a1 = ["cheng", "ke", "xin","a","b",2025];
+        let a2 = new Array("cheng", "ke", "xin","a","b",2025);
+        let a3 = new Array(5);
+        let a4 = Array.of(5);
+        // 数组的赋值
+        a1[0] = "chengxin";
+        a1["ckx"] = "chengxin"; // 数组的索引可以是字符串,不算到数组的长度
+        // 数组的长度
+        console.log(a1.length);
+        // 数组的方法
+        // 增加成员 ：push() unshift()
+        // push() ：在数组的末尾添加成员
+        a1.push("good luck");
+        console.log(a1);
+        // unshift() ：在数组的开头添加成员
+        a1.unshift("hello");
+        console.log(a1);
+        // 删除成员 ：pop() shift()
+        // pop() ：删除数组的最后一个成员
+        a1.pop();
+        console.log(a1);
+        // shift() ：删除数组的第一个成员
+        a1.shift();
+        console.log(a1);
+        // splice() ：删除、添加、替换成员
+        // 删除成员
+        a1.splice(1,2); // 删除索引1、2的成员
+        console.log(a1);
+        // 添加成员
+        a1.splice(1,0,"ke","xin"); // 解释：从索引1开始，删除0个成员，添加"ke","xin"
+        console.log(a1);
+        // 替换成员
+        a1.splice(1,2,"666","999");// 解释：从索引1开始，删除2个成员，添加"666","999"
+        console.log(a1);
+        
+        // slice()  :截取成员,左闭，右开
+        // 解释：从索引1开始，截取2个成员
+        let a5 = a1.slice(1,3); // ["666","999"]
+        console.log(a5);
+
+        let a6 = a5;
+        a6[0] = "good luck";
+        console.log(a5) // ["good luck","999"] 值改变
+
+        // 数组的克隆：多数是浅克隆，json: 深克隆
+        // concat() ：数组的拼接,克隆a1
+        let a7 = a1.concat();
+    </script>
+</body>
+</html>

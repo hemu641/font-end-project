@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何丹：对象Object</title>
+</head>
+<body>
+    <script>
+        //定义person对象,包括name,age,gender,身高
+        var person = {
+            name: '张三',
+            age: 18,
+            gender: '女',
+            height: 170,
+            // getter:出生年龄
+            get birth() {
+                return new Date().getFullYear() - this.age;
+            },
+            // setter:设置出生年龄
+            set birth(value) {
+                this.age = new Date().getFullYear() - value;
+            },
+            //方法:打印person对象
+            print() {
+                console.log(this.name + ' ' + this.age + ' ' + this.gender + ' ' + this.height);
+            }
+        }
+        //输出name,两种方法
+        console.log(person.name);
+        console.log(person['name']);
+        //输出出生年：getter
+        console.log(person.birth);
+        //调用方法
+        person.print();
+        //判断是否有sex属性,两种方法
+        console.log('sex' in person);
+        console.log(person.hasOwnProperty('sex'));
+        //所有对象都是object的对象的子对象
+        //循环输出对象的属性
+        for (var key in person) {
+            console.log(key + ':' + person[key]);
+        }
+        //对象的引用，定义person2
+        var person2 = person;
+        person2.name = '王五';
+        console.log(person.name);
+        //对象的克隆：浅克隆和深克隆
+        //浅克隆的两种方法
+        //assign
+        var person3 = Object.assign({}, person);
+        //for ... in
+        for (var key in person) {
+            person3[key] = person[key];
+        }
+        //JS内部对象：Math和date
+        //random floor\ceil round
+        console.log(Math.random());
+        //【0,1）的随机数
+        //0到100的随机整数，包括0
+        console.log(Math.floor(Math.random() * 101));
+        //100到999的随机整数
+        console.log(Math.floor(Math.random() * 900 + 100));
+        //各种取整
+        console.log(Math.floor(10.5));
+        //日期及其常用方法
+        var date = new Date();
+        console.log(date.getFullYear());
+        console.log(date.getMonth());
+        //从0开始
+        console.log(date.getDate());
+        console.log(date.getDay());
+        console.log(date.getHours());
+        console.log(date.getTime());
+        console.log(date.getMinutes());
+        console.log(date.getSeconds());
+        console.log(date.getMilliseconds());
+
+
+
+        //json: JavaScript Object Notation
+    </script>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>汽车资讯</title>
+    <!-- CSS样式将在这里添加 -->
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+        }
+        
+        /* Tab容器 */
+        .tab-container {
+            width: 800px;
+            margin: 20px auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        /* Tab标题栏 */
+        .tab-header {
+            display: flex;
+            align-items: center;
+            background-color: #f8f8f8;
+            padding: 0 10px;
+            height: 45px;
+            position: relative;
+        }
+        
+        /* Tab标题 */
+        .tab-title {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        /* 选中的Tab标题 */
+        .tab-title.active {
+            color: #ff6600;
+            font-weight: bold;
+        }
+        
+        /* 选中Tab的下划线 */
+        .tab-title.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ff6600;
+        }
+        
+        /* 汽车热搜榜 */
+        .hot-search {
+            margin-left: auto;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Tab内容区域 */
+        .tab-content {
+            padding: 15px;
+        }
+        
+        /* Tab面板 */
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        /* 内容包装器 */
+        .content-wrapper {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        /* 左侧图片区域 */
+        .left-section {
+            width: 200px;
+            margin-right: 20px;
+            position: relative;
+        }
+        
+        /* 特色图片 */
+        .featured-image {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* 图片标题 */
+        .image-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 12px;
+            padding: 5px 10px;
+            border: 1px solid #e0e0e0;
+            border-top: none;
+        }
+        
+        /* 右侧内容区域 */
+        .right-section {
+            flex: 1;
+        }
+        
+        /* 新闻列表 */
+        .news-list {
+            list-style: none;
+        }
+        
+        .news-item {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* 列表标记 */
+        .bullet {
+            color: #333;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        /* 新闻链接 */
+        .news-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        
+        .news-link:hover {
+            color: #ff6600;
+            text-decoration: underline;
+        }
+        
+        /* 子导航 */
+        .sub-nav {
+            display: flex;
+            flex-wrap: wrap;
+            padding-top: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .sub-nav-item {
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            margin-right: 15px;
+            margin-bottom: 5px;
+            transition: color 0.3s ease;
+        }
+        
+        .sub-nav-item:hover {
+            color: #ff6600;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            /* 调整容器宽度 */
+            .tab-container {
+                width: 100%;
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            /* 调整Tab标题栏 */
+            .tab-header {
+                padding: 0 5px;
+                height: 40px;
+            }
+            
+            /* 调整Tab标题大小 */
+            .tab-title {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+            
+            /* 调整汽车热搜榜字体大小 */
+            .hot-search {
+                font-size: 12px;
+            }
+            
+            /* 调整内容区域内边距 */
+            .tab-content {
+                padding: 10px;
+            }
+            
+            /* 在小屏幕上改为垂直布局 */
+            .content-wrapper {
+                flex-direction: column;
+                margin-bottom: 10px;
+            }
+            
+            /* 调整左侧图片区域宽度 */
+            .left-section {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            /* 调整特色图片高度 */
+            .featured-image {
+                height: 180px;
+            }
+            
+            /* 调整新闻列表项间距 */
+            .news-item {
+                margin-bottom: 8px;
+            }
+            
+            /* 调整新闻链接字体大小 */
+            .news-link {
+                font-size: 13px;
+            }
+            
+            /* 调整子导航项间距 */
+            .sub-nav-item {
+                margin-right: 10px;
+                margin-bottom: 8px;
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            /* 进一步优化移动端显示 */
+            .tab-header {
+                height: 35px;
+            }
+            
+            .tab-title {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+            
+            .hot-search {
+                display: none; /* 在最小屏幕上隐藏热搜榜 */
+            }
+            
+            .featured-image {
+                height: 150px;
+            }
+            
+            .image-caption {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            
+            .sub-nav {
+                justify-content: center;
+            }
+            
+            .sub-nav-item {
+                margin-right: 8px;
+                font-size: 11px;
+            }
+        }
+        
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .tab-title:active {
+                background-color: #f0f0f0;
+            }
+            
+            .news-link:active {
+                background-color: #f0f0f0;
+            }
+            
+            .sub-nav-item:active {
+                background-color: #f0f0f0;
+            }
+        }
+        
+        /* 高对比度模式支持 */
+        @media (prefers-contrast: high) {
+            .tab-container {
+                border: 2px solid #000;
+            }
+            
+            .tab-title.active {
+                color: #cc5200;
+            }
+            
+            .tab-title.active::after {
+                height: 3px;
+            }
+        }
+        
+        /* 减少动画模式支持 */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tab-container">
+        <!-- Tab标题栏 -->
+        <div class="tab-header">
+            <div class="tab-title active">汽车</div>
+            <div class="tab-title">购车</div>
+            <div class="tab-title">找车</div>
+            <div class="hot-search">汽车热搜榜</div>
+        </div>
+        
+        <!-- Tab内容区域 -->
+        <div class="tab-content">
+            <!-- 汽车标签内容 -->
+            <div class="tab-panel active">
+                <div class="content-wrapper">
+                    <div class="left-section">
+                        <img src="../../images/1.jpg" alt="实拍汉L EV" class="featured-image">
+                        <div class="image-caption">实拍汉L EV</div>
+                    </div>
+                    <div class="right-section">
+                        <ul class="news-list">
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">实拍2026款捷途旅行者C-DM</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">吉利银河A7首次OTA升级</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">宏光MINIEV四门版新车上市</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">卡宴纯电将于11月19日首发</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 子导航 -->
+                <div class="sub-nav">
+                    <a href="#" class="sub-nav-item">排行榜</a>
+                    <a href="#" class="sub-nav-item">新能源</a>
+                    <a href="#" class="sub-nav-item">车型库</a>
+                    <a href="#" class="sub-nav-item">新车</a>
+                    <a href="#" class="sub-nav-item">导购</a>
+                    <a href="#" class="sub-nav-item">说车</a>
+                    <a href="#" class="sub-nav-item">试车</a>
+                    <a href="#" class="sub-nav-item">新闻</a>
+                    <a href="#" class="sub-nav-item">解析</a>
+                    <a href="#" class="sub-nav-item">报价</a>
+                    <a href="#" class="sub-nav-item">图片</a>
+                </div>
+            </div>
+            
+            <!-- 购车标签内容 -->
+            <div class="tab-panel">
+                <div class="content-wrapper">
+                    <div class="left-section">
+                        <img src="../../images/2.jpg" alt="购车推荐" class="featured-image">
+                        <div class="image-caption">购车推荐</div>
+                    </div>
+                    <div class="right-section">
+                        <ul class="news-list">
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">15万预算最值得买的SUV推荐</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">新能源汽车购车攻略2024</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">购车贷款vs全款哪个更划算</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">二手车选购注意事项</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 子导航 -->
+                <div class="sub-nav">
+                    <a href="#" class="sub-nav-item">热门车型</a>
+                    <a href="#" class="sub-nav-item">购车计算器</a>
+                    <a href="#" class="sub-nav-item">优惠活动</a>
+                    <a href="#" class="sub-nav-item">团购信息</a>
+                    <a href="#" class="sub-nav-item">4S店查询</a>
+                </div>
+            </div>
+            
+            <!-- 找车标签内容 -->
+            <div class="tab-panel">
+                <div class="content-wrapper">
+                    <div class="left-section">
+                        <img src="../../images/3.jpg" alt="找车服务" class="featured-image">
+                        <div class="image-caption">找车服务</div>
+                    </div>
+                    <div class="right-section">
+                        <ul class="news-list">
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">按价格找车</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">按品牌找车</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">按车型找车</a>
+                            </li>
+                            <li class="news-item">
+                                <span class="bullet">•</span>
+                                <a href="#" class="news-link">二手车搜索</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 子导航 -->
+                <div class="sub-nav">
+                    <a href="#" class="sub-nav-item">条件筛选</a>
+                    <a href="#" class="sub-nav-item">对比车型</a>
+                    <a href="#" class="sub-nav-item">找车助手</a>
+                    <a href="#" class="sub-nav-item">预约试驾</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript代码将在这里添加 -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有的tab标题和内容面板
+            const tabTitles = document.querySelectorAll('.tab-title');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+            
+            // 为每个tab标题添加点击事件监听
+            tabTitles.forEach((title, index) => {
+                title.addEventListener('click', () => {
+                    // 移除所有tab标题的active类
+                    tabTitles.forEach(t => t.classList.remove('active'));
+                    // 移除所有内容面板的active类
+                    tabPanels.forEach(p => p.classList.remove('active'));
+                    
+                    // 为当前点击的tab标题添加active类
+                    title.classList.add('active');
+                    // 为对应的内容面板添加active类
+                    tabPanels[index].classList.add('active');
+                    
+                    console.log(`切换到${title.textContent}标签`);
+                });
+                
+                // 添加鼠标悬停效果
+                title.addEventListener('mouseenter', () => {
+                    if (!title.classList.contains('active')) {
+                        title.style.color = '#ff9900';
+                    }
+                });
+                
+                title.addEventListener('mouseleave', () => {
+                    if (!title.classList.contains('active')) {
+                        title.style.color = '#666';
+                    }
+                });
+            });
+            
+            // 添加键盘导航支持
+            document.addEventListener('keydown', function(e) {
+                // 获取当前激活的tab索引
+                let activeIndex = 0;
+                tabTitles.forEach((title, index) => {
+                    if (title.classList.contains('active')) {
+                        activeIndex = index;
+                    }
+                });
+                
+                // 左箭头键 - 切换到上一个tab
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const prevIndex = (activeIndex - 1 + tabTitles.length) % tabTitles.length;
+                    tabTitles[prevIndex].click();
+                }
+                
+                // 右箭头键 - 切换到下一个tab
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    const nextIndex = (activeIndex + 1) % tabTitles.length;
+                    tabTitles[nextIndex].click();
+                }
+            });
+            
+            console.log('Tab切换功能初始化完成');
+        });
+    </script>
+</body>
+</html>
